@@ -1,0 +1,13 @@
+{
+    "PORT":4444,
+    "MONGO_URL":"mongodb://71an.com:2706/playcanvas",
+    "SESSION_SECRET":"adsfd",
+    "REDIS_URL":"localhost:6379",
+    "ADMINS":"leven@71an.com",
+    "RESOURCES":"./src/resources",
+    "CSS":"./public/static/css",
+    "JS":"./public/static/js",
+    "TEMPLATE":"./src/template"
+
+}
+

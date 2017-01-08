@@ -1,0 +1,11 @@
+.DS_Store
+node_modules
+thimble.sqlite
+.env
+.heroku
+fakes3
+.htaccess
+locale/**/*.json
+public/stylesheets/userbar.css
+dist/
+client/

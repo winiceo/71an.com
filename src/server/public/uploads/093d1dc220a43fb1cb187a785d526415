@@ -1,0 +1,18 @@
+var Abcd = pc.createScript('abcd');
+
+// initialize code called once per entity
+Abcd.prototype.initialize = function() {
+    
+};
+
+// update code called every frame
+Abcd.prototype.update = function(dt) {
+    
+};
+
+// swap method called for script hot-reloading
+// inherit your script state here
+// Abcd.prototype.swap = function(old) { };
+
+// to learn more about script anatomy, please read:
+// http://developer.playcanvas.com/en/user-manual/scripting/

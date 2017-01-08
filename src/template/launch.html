@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Launch</title>
+
+    <meta name='robots' content='noindex' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no' />
+
+    <!-- Origin Trial Token, feature = WebVR, origin = https://playcanvas.com, expires = 2017-01-23-->
+    <meta http-equiv="origin-trial" data-feature="WebVR" data-expires="2017-01-23" content="AuPAj3D42VBPl1G47y4ad0x7ZFIpvYNFAuUPpwyPnAc1ificyrjzsZw6uEXQURSAcSMwrTC0z12f98dlq7y71wIAAABgeyJvcmlnaW4iOiJodHRwczovL3BsYXljYW52YXMuY29tOjQ0MyIsImZlYXR1cmUiOiJXZWJWUiIsImV4cGlyeSI6MTQ4NTIwMTk0NywiaXNTdWJkb21haW4iOnRydWV9" />
+
+    <link href='/editor/scene/css/launch.css' rel='stylesheet' />
+    <link rel='icon' type='image/png' href='//s3-eu-west-1.amazonaws.com/static.playcanvas.com/images/icons/favicon.png' />
+    <!-- Empty style tag used to add css -->
+    <style></style>
+</head>
+<body>
+<script type='text/javascript'>
+
+    {% if config %}
+    var config= {{config|dump|safe}}
+    {% endif %}
+
+</script>
+
+<!-- engine -->
+<script src="https://code.playcanvas.com/playcanvas-stable.js"></script>
+<script src='/editor/scene/js/events.js'></script>
+<script src='https://msg.playcanvas.com/messenger.js'></script>
+
+<script src='/static/js/sharedb.js'></script>
+
+ 
+<script src='/static/js/launch.js'></script>
+<!-- <script src='/editor/launch.js'></script>
+ -->
+
+
+</body>
+</html>

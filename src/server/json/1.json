@@ -1,0 +1,547 @@
+/**
+ * Created by leven on 17/1/5.
+ */
+[
+  {
+    "data": {
+      "v": 1,
+      "data": {
+        "docName": "487210",
+        "name": "Untitled",
+        "created": "2017-01-04T15:09:19.440Z",
+        "settings": {
+          "physics": {
+            "gravity": [
+              0,
+              -9.8,
+              0
+            ]
+          },
+          "render": {
+            "fog_end": 1000,
+            "tonemapping": 0,
+            "skybox": null,
+            "fog_density": 0.01,
+            "gamma_correction": 1,
+            "exposure": 1,
+            "fog_start": 1,
+            "global_ambient": [
+              0.2,
+              0.2,
+              0.2
+            ],
+            "skyboxIntensity": 1,
+            "fog_color": [
+              0,
+              0,
+              0
+            ],
+            "lightmapMode": 1,
+            "fog": "none",
+            "lightmapMaxResolution": 2048,
+            "skyboxMip": 0,
+            "lightmapSizeMultiplier": 16
+          }
+        },
+        "scene": 487784,
+        "entities": {
+          "c426dc34-d28f-11e6-89b2-22000ac481df": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "name": "Root",
+            "parent": null,
+            "resource_id": "c426dc34-d28f-11e6-89b2-22000ac481df",
+            "components": {},
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true,
+            "children": [
+              "c426de32-d28f-11e6-89b2-22000ac481df",
+              "c426dffe-d28f-11e6-89b2-22000ac481df",
+              "c426e1a2-d28f-11e6-89b2-22000ac481df",
+              "c426e350-d28f-11e6-89b2-22000ac481df"
+            ]
+          },
+          "c426e1a2-d28f-11e6-89b2-22000ac481df": {
+            "position": [
+              0,
+              0.5,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "name": "Box",
+            "parent": "c426dc34-d28f-11e6-89b2-22000ac481df",
+            "resource_id": "c426e1a2-d28f-11e6-89b2-22000ac481df",
+            "components": {
+              "model": {
+                "lightMapSizeMultiplier": 1,
+                "castShadows": true,
+                "castShadowsLightmap": true,
+                "lightmapped": false,
+                "materialAsset": null,
+                "receiveShadows": true,
+                "enabled": true,
+                "castShadowsLightMap": false,
+                "asset": null,
+                "lightmapSizeMultiplier": 1,
+                "type": "box",
+                "lightMapped": false
+              }
+            },
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true,
+            "children": []
+          },
+          "c426dffe-d28f-11e6-89b2-22000ac481df": {
+            "position": [
+              2,
+              2,
+              -2
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "name": "Light",
+            "parent": "c426dc34-d28f-11e6-89b2-22000ac481df",
+            "resource_id": "c426dffe-d28f-11e6-89b2-22000ac481df",
+            "components": {
+              "light": {
+                "castShadows": true,
+                "shadowDistance": 16,
+                "vsmBlurSize": 11,
+                "shadowUpdateMode": 2,
+                "normalOffsetBias": 0.04,
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "falloffMode": 0,
+                "shadowResolution": 1024,
+                "outerConeAngle": 45,
+                "enabled": true,
+                "range": 8,
+                "affectDynamic": true,
+                "intensity": 1,
+                "affectLightmapped": false,
+                "vsmBlurMode": 1,
+                "innerConeAngle": 40,
+                "shadowBias": 0.04,
+                "bake": false,
+                "type": "directional",
+                "shadowType": 0,
+                "vsmBias": 0.01
+              }
+            },
+            "rotation": [
+              45,
+              135,
+              0
+            ],
+            "enabled": true,
+            "children": []
+          },
+          "c426de32-d28f-11e6-89b2-22000ac481df": {
+            "position": [
+              4,
+              3.5,
+              4
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "name": "Camera",
+            "parent": "c426dc34-d28f-11e6-89b2-22000ac481df",
+            "resource_id": "c426de32-d28f-11e6-89b2-22000ac481df",
+            "components": {
+              "camera": {
+                "projection": 0,
+                "farClip": 1000,
+                "clearColorBuffer": true,
+                "priority": 0,
+                "fov": 45,
+                "clearDepthBuffer": true,
+                "frustumCulling": true,
+                "clearColor": [
+                  0.118,
+                  0.118,
+                  0.118,
+                  1
+                ],
+                "enabled": true,
+                "orthoHeight": 4,
+                "nearClip": 0.1,
+                "rect": [
+                  0,
+                  0,
+                  1,
+                  1
+                ]
+              }
+            },
+            "rotation": [
+              -30,
+              45,
+              0
+            ],
+            "enabled": true,
+            "children": []
+          },
+          "c426e350-d28f-11e6-89b2-22000ac481df": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              8,
+              1,
+              8
+            ],
+            "name": "Plane",
+            "parent": "c426dc34-d28f-11e6-89b2-22000ac481df",
+            "resource_id": "c426e350-d28f-11e6-89b2-22000ac481df",
+            "components": {
+              "model": {
+                "lightMapSizeMultiplier": 1,
+                "castShadows": true,
+                "castShadowsLightmap": true,
+                "lightmapped": false,
+                "materialAsset": null,
+                "receiveShadows": true,
+                "enabled": true,
+                "castShadowsLightMap": false,
+                "asset": null,
+                "lightmapSizeMultiplier": 1,
+                "type": "plane",
+                "lightMapped": false
+              }
+            },
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true,
+            "children": []
+          }
+        },
+        "project_id": 448674,
+        "type": "http://sharejs.org/types/JSONv0",
+        "v": 3,
+        "m": {
+          "ctime": 1483542559440.769,
+          "mtime": 1483543127101
+        }
+      }
+    },
+    "a": "s",
+    "c": "scenes",
+    "d": "487210"
+  },
+  {
+    "data": {
+      "data": {
+        "name": "ok",
+        "created": "2017-01-04T15:09:19.440Z",
+        "settings": {
+          "physics": {
+            "gravity": [
+              0,
+              -9.8,
+              0
+            ]
+          },
+          "render": {
+            "fog_end": 1000,
+            "tonemapping": 0,
+            "skybox": null,
+            "fog_density": 0.01,
+            "gamma_correction": 1,
+            "exposure": 1,
+            "fog_start": 1,
+            "global_ambient": [
+              0.2,
+              0.2,
+              0.2
+            ],
+            "skyboxIntensity": 1,
+            "fog_color": [
+              0,
+              0,
+              0
+            ],
+            "lightmapMode": 1,
+            "fog": "none",
+            "lightmapMaxResolution": 2048,
+            "skyboxMip": 0,
+            "lightmapSizeMultiplier": 16
+          }
+        },
+        "scene": 487784,
+        "entities": {
+          "c426dc34-d28f-11e6-89b2-22000ac481df": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "name": "Root",
+            "parent": null,
+            "resource_id": "c426dc34-d28f-11e6-89b2-22000ac481df",
+            "components": {
+            },
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true,
+            "children": [
+              "c426de32-d28f-11e6-89b2-22000ac481df",
+              "c426dffe-d28f-11e6-89b2-22000ac481df",
+              "c426e1a2-d28f-11e6-89b2-22000ac481df",
+              "c426e350-d28f-11e6-89b2-22000ac481df"
+            ],
+            "tags": []
+          },
+          "c426e1a2-d28f-11e6-89b2-22000ac481df": {
+            "position": [
+              0,
+              0.5,
+              0
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "name": "Box",
+            "parent": "c426dc34-d28f-11e6-89b2-22000ac481df",
+            "resource_id": "c426e1a2-d28f-11e6-89b2-22000ac481df",
+            "components": {
+              "model": {
+                "lightMapSizeMultiplier": 1,
+                "castShadows": true,
+                "castShadowsLightmap": true,
+                "lightmapped": false,
+                "materialAsset": null,
+                "receiveShadows": true,
+                "enabled": true,
+                "castShadowsLightMap": false,
+                "asset": null,
+                "lightmapSizeMultiplier": 1,
+                "type": "box",
+                "lightMapped": false,
+                "isStatic": false
+              }
+            },
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true,
+            "children": [],
+            "tags": []
+          },
+          "c426dffe-d28f-11e6-89b2-22000ac481df": {
+            "position": [
+              2,
+              2,
+              -2
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "name": "Light",
+            "parent": "c426dc34-d28f-11e6-89b2-22000ac481df",
+            "resource_id": "c426dffe-d28f-11e6-89b2-22000ac481df",
+            "components": {
+              "light": {
+                "castShadows": true,
+                "shadowDistance": 16,
+                "vsmBlurSize": 11,
+                "shadowUpdateMode": 2,
+                "normalOffsetBias": 0.04,
+                "color": [
+                  1,
+                  1,
+                  1
+                ],
+                "falloffMode": 0,
+                "shadowResolution": 1024,
+                "outerConeAngle": 45,
+                "enabled": true,
+                "range": 8,
+                "affectDynamic": true,
+                "intensity": 1,
+                "affectLightmapped": false,
+                "vsmBlurMode": 1,
+                "innerConeAngle": 40,
+                "shadowBias": 0.04,
+                "bake": false,
+                "type": "directional",
+                "shadowType": 0,
+                "vsmBias": 0.01,
+                "isStatic": false,
+                "bakeDir": true,
+                "cookieAsset": null,
+                "cookieIntensity": 1,
+                "cookieFalloff": true,
+                "cookieChannel": "rgb",
+                "cookieAngle": 0,
+                "cookieScale": [
+                  1,
+                  1
+                ],
+                "cookieOffset": [
+                  0,
+                  0
+                ]
+              }
+            },
+            "rotation": [
+              45,
+              135,
+              0
+            ],
+            "enabled": true,
+            "children": [],
+            "tags": []
+          },
+          "c426de32-d28f-11e6-89b2-22000ac481df": {
+            "position": [
+              4,
+              3.5,
+              4
+            ],
+            "scale": [
+              1,
+              1,
+              1
+            ],
+            "name": "Camera",
+            "parent": "c426dc34-d28f-11e6-89b2-22000ac481df",
+            "resource_id": "c426de32-d28f-11e6-89b2-22000ac481df",
+            "components": {
+              "camera": {
+                "projection": 0,
+                "farClip": 1000,
+                "clearColorBuffer": true,
+                "priority": 0,
+                "fov": 45,
+                "clearDepthBuffer": true,
+                "frustumCulling": true,
+                "clearColor": [
+                  0.118,
+                  0.118,
+                  0.118,
+                  1
+                ],
+                "enabled": true,
+                "orthoHeight": 4,
+                "nearClip": 0.1,
+                "rect": [
+                  0,
+                  0,
+                  1,
+                  1
+                ]
+              }
+            },
+            "rotation": [
+              -30,
+              45,
+              0
+            ],
+            "enabled": true,
+            "children": [],
+            "tags": []
+          },
+          "c426e350-d28f-11e6-89b2-22000ac481df": {
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "scale": [
+              8,
+              1,
+              8
+            ],
+            "name": "Plane",
+            "parent": "c426dc34-d28f-11e6-89b2-22000ac481df",
+            "resource_id": "c426e350-d28f-11e6-89b2-22000ac481df",
+            "components": {
+              "model": {
+                "lightMapSizeMultiplier": 1,
+                "castShadows": true,
+                "castShadowsLightmap": true,
+                "lightmapped": false,
+                "materialAsset": null,
+                "receiveShadows": true,
+                "enabled": true,
+                "castShadowsLightMap": false,
+                "asset": null,
+                "lightmapSizeMultiplier": 1,
+                "type": "plane",
+                "lightMapped": false,
+                "isStatic": false
+              }
+            },
+            "rotation": [
+              0,
+              0,
+              0
+            ],
+            "enabled": true,
+            "children": [],
+            "tags": []
+          }
+        },
+        "project_id": 449204
+      },
+      "type": "http://sharejs.org/types/JSONv0",
+      "v": 3,
+      "docName": "487784",
+      "m": {
+        "ctime": 1483542559440.769,
+        "mtime": 1483543127101
+      }
+    },
+    "a": "sub",
+    "c": "scenes",
+    "d": "487784"
+  }
+]

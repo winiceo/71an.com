@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>asasdfadsf | Editor</title>
+
+    <meta name='robots' content='noindex'/>
+    <meta name='viewport'
+          content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no'/>
+
+    <link href='/editor/scene/css/ui.css' rel='stylesheet'/>
+    <link href='/editor/scene/css/editor.css' rel='stylesheet'/>
+    <link href='/editor/scene/css/theme-dark.css' rel='stylesheet'/>
+    <link rel='icon' type='image/png'
+          href='//s3-eu-west-1.amazonaws.com/static.playcanvas.com/images/icons/favicon.png'/>
+</head>
+<body>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.min.js"></script>
+<!--<script type='text/javascript'>-->
+
+    <!--{% if config %}-->
+    <!--var config= {{config|dump|safe}}-->
+    <!--{% endif %}-->
+
+<!--</script>-->
+项目列表
+
+
+<ul>
+    {% for  project in projects %}
+    <li> <a href="/project/{{project.id}}/overview/{{project.name}}">----{{ project.name }}</a></li>
+    {% endfor %}
+</ul>
+
+ <div id="editor">
+
+      项目名称：<input type="text"  v-model="project.name"><br>
+      项目描述：<input type="text"  v-model="project.description"><br>
+      项目描述：<input type=button @click="submit" value="ok"><br>
+
+ </div>
+
+<script>
+
+    new Vue({
+        el: '#editor',
+        data: {
+            project:{
+                "name": "aafasdfasdf",
+                "description": "asdfasdf",
+                "private": false,
+                "owner": "leven",
+                "settings": {
+                    "use_legacy_scripts": false,
+                    "vr": false
+                }
+            }
+        },
+        computed: {
+            compiledMarkdown: function () {
+                return marked(this.input, { sanitize: true })
+            }
+        },
+        methods: {
+            submit: function(){
+                var _vm=this;
+                fetch('/api/projects', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(_vm.project )
+                }) .then(function(data) {
+                    console.log('request succeeded with JSON response', data)
+                }).catch(function(error) {
+                    console.log('request failed', error)
+                })
+            }
+        }
+    })
+
+</script>
+
+</body>
+</html>

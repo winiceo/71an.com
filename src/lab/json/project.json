@@ -1,0 +1,73 @@
+{
+  "primary_pack": 487210,
+  "new_owner": null,
+  "private": false,
+  "engine_version": "stable",
+  "last_post_id": null,
+  "owner": "leven",
+  "watched": 0,
+  "id": 448674,
+  "plays": 0,
+  "access_level": "read",
+  "fork_count": 0,
+  "size": {
+    "total": 8,
+    "code": 0,
+    "apps": 0,
+    "assets": 8
+  },
+  "owner_id": 10695,
+  "website": "",
+  "fork_from": null,
+  "hash": "2OT5DS7f",
+  "description": "sdafasdf",
+  "views": 5,
+  "private_source_assets": false,
+  "last_post_date": null,
+  "tags": [],
+  "permissions": {
+    "admin": [
+      "leven"
+    ],
+    "write": [],
+    "read": []
+  },
+  "locked": false,
+  "name": "asasdfadsf",
+  "settings": {
+    "loading_screen_script": null,
+    "transparent_canvas": true,
+    "use_device_pixel_ratio": true,
+    "use_legacy_scripts": false,
+    "resolution_mode": "AUTO",
+    "antiAlias": true,
+    "height": 720,
+    "libraries": [
+      "physics-engine-3d"
+    ],
+    "width": 1280,
+    "vr": false,
+    "scripts": [],
+    "fill_mode": "FILL_WINDOW",
+    "preserve_drawing_buffer": true
+  },
+  "created": "2017-01-02T10:11:35.679000",
+  "repositories": {
+    "current": "directory",
+    "directory": {
+      "state": {
+        "status": "ready"
+      },
+      "modified": "2017-01-02T10:11:35.679000",
+      "created": "2017-01-02T10:11:35.679000"
+    }
+  },
+  "modified": "2017-01-02T10:12:10.616000",
+  "flags": {},
+  "activity": {
+    "rank": 0,
+    "level": 0.0008071588010204082
+  },
+  "primary_app": null,
+  "starred": 0
+}

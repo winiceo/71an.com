@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>asasdfadsf | Editor</title>
+
+    <meta name='robots' content='noindex'/>
+    <meta name='viewport'
+          content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no'/>
+
+    <link href='/editor/scene/css/ui.css' rel='stylesheet'/>
+    <link href='/editor/scene/css/editor.css' rel='stylesheet'/>
+    <link href='/editor/scene/css/theme-dark.css' rel='stylesheet'/>
+    <link rel='icon' type='image/png'
+          href='//s3-eu-west-1.amazonaws.com/static.playcanvas.com/images/icons/favicon.png'/>
+</head>
+<body>
+ 
+<script type='text/javascript'>
+
+    {% if config %}
+    var config= {{config|dump|safe}}
+    {% endif %}
+
+</script>
+
+<!-- messenger -->
+<script src='/editor/scene/js/events.js'></script>
+<script src='https://msg.playcanvas.com/messenger.js'></script>
+
+
+<!-- engine -->
+<script src="/playcanvas-stable.js"></script>
+
+<!-- main -->
+<script src='/static/js/sharedb.js'></script>
+ 
+
+<script src='/static/js/editor.js'></script>
+
+
+</body>
+</html>

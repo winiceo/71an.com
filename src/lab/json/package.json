@@ -1,0 +1,104 @@
+{
+  "self": {
+    "id": 10695,
+    "username": "leven",
+    "betaTester": false,
+    "superUser": false,
+    "openedEditor": false,
+    "tips": {
+      "store": true
+    },
+    "plan": {
+      "id": 1,
+      "type": "free"
+    }
+  },
+  "owner": {
+    "id": 10695,
+    "username": "leven",
+    "plan": {
+      "id": 1,
+      "type": "free"
+    },
+    "size": 20871079,
+    "diskAllowance": 200000000
+  },
+  "accessToken": "to52zxqwejzdbc67hdxahc5ja62royhe",
+  "project": {
+    "primary_pack": 488291,
+    "new_owner": null,
+    "private": false,
+    "engine_version": "stable",
+    "last_post_id": null,
+    "owner": "leven",
+    "watched": 0,
+    "plays": 0,
+    "private_settings": {},
+    "access_level": "admin",
+    "size": {
+      "code": 0,
+      "total": 0,
+      "apps": 0,
+      "assets": 0
+    },
+    "owner_id": 10695,
+    "website": "",
+    "fork_from": null,
+    "hash": "cw4SvI7U",
+    "description": "就昌",
+    "views": 0,
+    "private_source_assets": false,
+    "last_post_date": null,
+    "tags": [],
+    "permissions": {
+      "admin": [
+        "leven"
+      ],
+      "write": [],
+      "read": []
+    },
+    "locked": false,
+    "name": "不让日",
+    "settings": {
+      "use_legacy_scripts": false,
+      "vr": false
+    },
+    "created": "2017-01-06T10:03:19.393000",
+    "repositories": {
+      "current": "directory",
+      "directory": {
+        "state": {
+          "status": "ready"
+        },
+        "modified": "2017-01-06T10:03:19.393000",
+        "created": "2017-01-06T10:03:19.393000"
+      }
+    },
+    "modified": "2017-01-06T10:03:19.393000",
+    "flags": {},
+    "activity": {
+      "level": 0
+    },
+    "primary_app": null,
+    "starred": 0,
+    "id": "4944ae5e-9348-4dad-b112-5e046b4858e3"
+  },
+  "scene": {
+    "id": "ba950a7d-af41-4199-b290-219534cf2bae"
+  },
+  "url": {
+    "api": "http://192.168.1.103:4444/api",
+    "home": "http://192.168.1.103:4444",
+    "realtime": {
+      "http": "ws://192.168.1.103:4444/channel"
+    },
+    "messenger": {
+      "http": "https://msg.playcanvas.com/",
+      "ws": "https://msg.playcanvas.com/messages"
+    },
+    "engine": "http://192.168.1.103:4444/playcanvas-stable.js",
+    "howdoi": "https://s3-eu-west-1.amazonaws.com/code.playcanvas.com/editor_howdoi.json",
+    "static": "https://s3-eu-west-1.amazonaws.com/static.playcanvas.com",
+    "images": "https://s3-eu-west-1.amazonaws.com/images.playcanvas.com"
+  }
+}
