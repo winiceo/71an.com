@@ -1,0 +1,34 @@
+{
+  "name": "racer-highway",
+  "description": "Websocket and browserchannel transport for Racer",
+  "version": "8.0.0",
+  "main": "./lib/server",
+  "browser": {
+    "main": "./lib/browser"
+  },
+  "dependencies": {
+    "browserchannel": "^2.0",
+    "extend": "^2.0.0",
+    "through": "^2.3.4",
+    "ws": "~1.1"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "keywords": [
+    "derby",
+    "derbyjs",
+    "racer",
+    "racerjs",
+    "websocket",
+    "browserchannel"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/derbyparty/racer-highway.git"
+  },
+  "bugs": {
+    "url": "https://github.com/derbyparty/racer-highway/issues"
+  },
+  "author": "Artur Zayats <zag2art@gmail.com>",
+  "license": "MIT"
+}

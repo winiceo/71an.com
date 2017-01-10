@@ -6,12 +6,14 @@ let querystring = require("querystring");
 let uuid = require("uuid");
 let cors = require("cors");
 let Cryptr = require("cryptr");
+let path = require("path");
 
 let env = require("./environment");
 let HttpError = require("./http-error");
 
 let upload = multer({
-  dest: require("os").tmpdir(),
+  dest1: require("os").tmpdir(),
+  dest: path.join(__dirname, 'public/uploads/'),
   limits: { fileSize: env.get("MAX_FILE_SIZE_BYTES") }
 });
 const publishHost = env.get("PUBLISH_HOSTNAME");
@@ -24,6 +26,11 @@ module.exports = function middlewareConstructor() {
      * Multipart File Upload of a single `brambleFile` form field
      */
     fileUpload: upload.single("brambleFile"),
+
+    /**
+     * Multipart File Upload of a single `brambleFile` form field
+     */
+    keditorUpload: upload.single("file"),
 
     /**
      * Add CORS Headers to the response
@@ -58,7 +65,7 @@ module.exports = function middlewareConstructor() {
       }
 
       let locale = (req.localeInfo && req.localeInfo.lang) ? req.localeInfo.lang : "en-US";
-      res.redirect(301, `/${locale}`);
+       res.redirect(301, `/${locale}`);
     },
 
     /**

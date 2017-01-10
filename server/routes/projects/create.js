@@ -1,53 +1,108 @@
 "use strict";
 
+var request = require("request");
 var querystring = require("querystring");
 
-var utils = require("../utils");
-var defaultProjectNameKey = require("../../../constants").DEFAULT_PROJECT_NAME_KEY;
-var defaultProject = require("../../../default");
 var HttpError = require("../../lib/http-error");
+let _=require("lodash")
+let createScenes=require("../../common/scenes")
+module.exports = function(backend,config, req, res, next) {
 
-module.exports = function(config, req, res, next) {
-  var user = req.user;
-  var now = req.query.now || (new Date()).toISOString();
-  var localeInfo = req.localeInfo;
-  var locale = (localeInfo && localeInfo.lang) ? localeInfo.lang : "en-US";
+  var data = req.body
+  // console.log(data)
+  // return res.json(data)
+  let model = backend.createModel()
+  // let createNull
+  let uid = model.id()
 
-  delete req.query.now;
-  delete req.query.cacheBust;
-  var qs = querystring.stringify(req.query);
-  if(qs !== "") {
-    qs = "?" + qs;
-  }
+  let $assets = model.at('projects.' + uid)
 
-  if(!user) {
-    res.redirect(307, "/" + locale + "/editor" + qs);
-    return;
-  }
+  $assets.subscribe(function (err) {
+    if (err) return next(err);
+    var assets = $assets.get();
 
-  var project = {
-    title: req.gettext(defaultProjectNameKey, (localeInfo && localeInfo.locale) ? localeInfo.locale : "en-US"),
-    date_created: now,
-    date_updated: now,
-    user_id: user && user.publishId
-  };
-
-  utils.createProject(config, user, project, function(err, status, project) {
-    if(err) {
-      res.status(status);
-      next(HttpError.format(err, req));
-      return;
+    let obj = {
+      "primary_pack": 488291,
+      "new_owner": null,
+      "private": false,
+      "engine_version": "stable",
+      "last_post_id": null,
+      "owner": "leven",
+      "watched": 0,
+      "id": 449678,
+      "plays": 0,
+      "private_settings": {},
+      "access_level": "admin",
+      "size": {
+        "code": 0,
+        "total": 0,
+        "apps": 0,
+        "assets": 0
+      },
+      "owner_id": 10695,
+      "website": "",
+      "fork_from": null,
+      "hash": "cw4SvI7U",
+      "description": "asdfasdf",
+      "views": 0,
+      "private_source_assets": false,
+      "last_post_date": null,
+      "tags": [],
+      "permissions": {
+        "admin": [
+          "leven"
+        ],
+        "write": [],
+        "read": []
+      },
+      "locked": false,
+      "name": "aafasdfasdf",
+      "settings": {
+        "loading_screen_script": null,
+        "transparent_canvas": false,
+        "use_device_pixel_ratio": false,
+        "use_legacy_scripts": false,
+        "preserve_drawing_buffer": false,
+        "antiAlias": true,
+        "height": 720,
+        "libraries": [],
+        "width": 1280,
+        "vr": false,
+        "scripts": [],
+        "fill_mode": "FILL_WINDOW",
+        "resolution_mode": "AUTO"
+      },
+      "created": "2017-01-06T10:03:19.393000",
+      "repositories": {
+        "current": "directory",
+        "directory": {
+          "state": {
+            "status": "ready"
+          },
+          "modified": "2017-01-06T10:03:19.393000",
+          "created": "2017-01-06T10:03:19.393000"
+        }
+      },
+      "modified": "2017-01-06T10:03:19.393000",
+      "flags": {},
+      "activity": {
+        "level": 0
+      },
+      "primary_app": null,
+      "starred": 0
     }
 
-    var defaultFiles = defaultProject.getAsStreams(config.DEFAULT_PROJECT_TITLE);
-    utils.persistProjectFiles(config, user, project, defaultFiles, function(err, status) {
-      if(err) {
-        res.status(status);
-        next(HttpError.format(err, req));
-        return;
-      }
 
-      res.redirect(307, "/" + locale + "/user/" + user.username + "/" + project.id + qs);
+    // If the room doesn't exist yet, we need to create it
+    $assets.createNull(_.assign(obj, data), function () {
+      "use strict";
+      createScenes($assets.get(),backend, function (scence) {
+        //res.json($assets.get())
+
+        res.send(scence.data)
+
+      })
     });
-  });
-};
+  })
+}
+

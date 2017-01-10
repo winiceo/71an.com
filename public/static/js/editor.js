@@ -12815,6 +12815,7 @@ editor.once('load', function() {
         editor.method('realtime:loadScene', function (id) {
             scene = connection.get('scenes', '' + id);
 
+
             // error
             scene.on('error', function(err) {
                 editor.emit('realtime:scene:error', err);
@@ -12830,7 +12831,7 @@ editor.once('load', function() {
                     for (var i = 0; i < ops.length; i++)
                         emitOp('scene', ops[i]);
                 });
-                console.error(scene.data)
+                console.error(scene)
 
                 // notify of scene load
                 editor.emit('scene:load', id);
@@ -27064,7 +27065,7 @@ editor.once('load', function() {
             assets.move(this, pos);
             editor.emit('assets:move', asset, pos);
         });
-
+        
         // publish added asset
         editor.emit('assets:add[' + asset.get('id') + ']', asset, pos);
         editor.emit('assets:add', asset, pos);
@@ -27234,8 +27235,10 @@ editor.once('load', function() {
 
         // ready to sync
         doc.on('load', function () {
-            var assetData = doc.data;
-            //console.error(assetData)
+            var assetData = doc.data.data;
+                       
+ 
+            // alert(JSON.stringify(assetData))
             if (! assetData) {
                 console.error('Could not load asset: ' + id);
                 editor.call('status:error', 'Could not load asset: ' + id);
@@ -27395,6 +27398,7 @@ editor.once('load', function() {
 
                 return;
             }
+            //console.error(JSON.stringify(res))
 
             if (! noSelect) {
                 var asset = editor.call('assets:get', res.asset.id);
@@ -27472,6 +27476,7 @@ editor.once('load', function() {
             editor.call('material:rememberMissingFields', asset);
 
             var assetData = asset.get('data');
+            
             if (assetData)
                 asset.set('data', editor.call('material:default', assetData));
         }
@@ -29957,6 +29962,7 @@ editor.once('load', function() {
 
 
     editor.method('assets:jobs:add', function(asset) {
+        alert(asset.get("id"))
         if (jobs[asset.get('id')])
             return;
 
@@ -34191,9 +34197,9 @@ editor.once('load', function() {
         });
 
         // ready to sync
-        data.on('ready', function() {
+        data.on('load', function() {
             // notify of operations
-            data.on('after op', function(ops, local) {
+            data.on('op', function(ops, local) {
                 if (local) return;
 
                 for (var i = 0; i < ops.length; i++) {
@@ -61500,6 +61506,7 @@ editor.once('load', function () {
         dropdown.on('click', function () {
             dropdown.class.add('clicked');
             dropdown.element.innerHTML = '&#57687;';
+             
 
             dropdownScene = scene;
             dropdownMenu.open = true;
@@ -64243,7 +64250,7 @@ editor.once('load', function() {
             editor.call('viewport:render');
         });
  console.log("=================")
-        console.log(assets)
+        console.log(asset.get('id'))
 
         var assetEngine = assets.get(asset.get('id'));
         console.error(assetEngine)

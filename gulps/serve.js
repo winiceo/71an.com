@@ -9,7 +9,7 @@ module.exports = function(gulp, plugins) {
 
     gulp.task('serve:start', function() {
         if (node) node.kill()
-        node = spawn('node', ['./src/server/index.js'], {stdio: 'inherit'})
+        node = spawn('node', ['./app.js'], {stdio: 'inherit'})
         node.on('close', function (code) {
             if (code === 8) {
                 gulp.log('Error detected, waiting for changes...');
@@ -27,7 +27,7 @@ module.exports = function(gulp, plugins) {
         //     'app/locales/**/*.json',
         // ]).on('change', plugins.browserSync.reload);
 
-        gulp.watch(['./src/server/**/*.js','./src/template/*'], function() {
+        gulp.watch(['./server/**/*.js','./views/*'], function() {
             gulp.run('serve:start')
         })
     });

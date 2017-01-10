@@ -17,38 +17,20 @@ let defaultCSPDirectives = {
   ],
   childSrc: [
     "'self'",
-    "https://pontoon.mozilla.org"
+    "https://pontoon.mozilla.org",
+    "https://s3-eu-west-1.amazonaws.com"
   ],
   frameAncestors: [
-    "https://pontoon.mozilla.org"
+    "https://pontoon.mozilla.org",
+    "https://s3-eu-west-1.amazonaws.com"
   ],
-  fontSrc: [
-    "'self'",
-    "https://fonts.gstatic.com",
-    "https://netdna.bootstrapcdn.com",
-    "https://code.cdn.mozilla.net/",
-    "https://pontoon.mozilla.org"
-  ],
+
+  fontSrc: [ "*" ],
   imgSrc: [ "*" ],
   mediaSrc: [ "*" ],
-  scriptSrc: [
-    "'self'",
-    "http://mozorg.cdn.mozilla.net",
-    "https://ajax.googleapis.com",
-    "https://mozorg.cdn.mozilla.net",
-    "https://www.google-analytics.com",
-    "https://pontoon.mozilla.org"
-  ],
+  scriptSrc: ["*"],
   styleSrc: [
-    "'self'",
-    "http://mozorg.cdn.mozilla.net",
-    "https://ajax.googleapis.com",
-    "https://fonts.googleapis.com",
-    "https://mozorg.cdn.mozilla.net",
-    "https://netdna.bootstrapcdn.com",
-    "https://pontoon.mozilla.org",
-    // Inline style for the spinner
-    "'sha256-jxjTomDIR9qe7wntK24mAd+gIoz39DrBll8o6DEBALs='"
+    "*"
   ]
 };
 

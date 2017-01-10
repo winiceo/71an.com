@@ -1,3 +1,6 @@
+/**
+ * Created by leven on 17/1/10.
+ */
 var CODE_MIRROR_OP_SOURCE = 'CodeMirror';
 
 /**
@@ -15,17 +18,17 @@ var CODE_MIRROR_OP_SOURCE = 'CodeMirror';
  *      to the console.
  */
 function ShareDBCodeMirror(codeMirror, options) {
-  this.codeMirror = codeMirror;
-  this.verbose = Boolean(options.verbose);
-  this.onOp = options.onOp;
-  this.onStart = options.onStart || function() {};
-  this.onStop = options.onStop || function() {};
+    this.codeMirror = codeMirror;
+    this.verbose = Boolean(options.verbose);
+    this.onOp = options.onOp;
+    this.onStart = options.onStart || function() {};
+    this.onStop = options.onStop || function() {};
 
-  this._started = false;
-  this._suppressChange = false;
-  this._changeListener = this._handleChange.bind(this);
+    this._started = false;
+    this._suppressChange = false;
+    this._changeListener = this._handleChange.bind(this);
 }
-//module.exports = ShareDBCodeMirror;
+// module.exports = ShareDBCodeMirror;
 
 /**
  * Attaches a ShareDB doc to a CodeMirror instance. You can also construct a
@@ -44,76 +47,92 @@ function ShareDBCodeMirror(codeMirror, options) {
  *    is hooked up. The first argument will be the error that occurred, if any.
  * @return {ShareDBCodeMirror} the created ShareDBCodeMirror object
  */
-ShareDBCodeMirror.attachDocToCodeMirror = function(shareDoc, codeMirror, options, callback) {
-  var key = options.key;
-  var verbose = Boolean(options.verbose);
+ShareDBCodeMirror.attachDocToCodeMirror = function(shareDoc, codeMirror,
+                                                   options, callback) {
+    var key = options.key;
+    var verbose = Boolean(options.verbose);
 
-  var shareDBCodeMirror = new ShareDBCodeMirror(codeMirror, {
-    verbose: verbose,
-    onStart: function() {
-      shareDoc.on('op', shareDBOpListener);
-    },
-    onStop: function() {
-      shareDoc.removeListener('op', shareDBOpListener);
-    },
-    onOp: function(op, source) {
-      var docOp = [{p: [key], t: 'text', o: op}];
+    var shareDBCodeMirror = new ShareDBCodeMirror(codeMirror, {
+        verbose: verbose,
+        onStart: function() {
+            shareDoc.on('op', shareDBOpListener);
+        },
+        onStop: function() {
+            shareDoc.removeListener('op', shareDBOpListener);
+        },
+        onOp: function(op, source) {
+            var docOp = [{
+                p: [key],
+                t: 'text',
+                o: op
+            }];
 
-      if (verbose) {
-        console.log('ShareDBCodeMirror: submitting op to doc:', docOp);
-      }
+            if (verbose) {
+                console.log('ShareDBCodeMirror: submitting op to doc:', docOp);
+            }
+            console.log(docOp)
+             console.error(source)
+            shareDoc.submitOp(docOp, source);
+            shareDBCodeMirror.assertValue(shareDoc.data[key]);
+        }
+    });
 
-      shareDoc.submitOp(docOp, source);
-      shareDBCodeMirror.assertValue(shareDoc.data[key]);
-    }
-  });
+    function shareDBOpListener(op, source) {
+        for (var i = 0; i < op.length; i++) {
+            var opPart = op[i];
 
-  function shareDBOpListener(op, source) {
-    for (var i = 0; i < op.length; i++) {
-      var opPart = op[i];
+            if (opPart.p && opPart.p.length === 1 && opPart.p[0] === key && opPart.t ===
+                'text') {
+                shareDBCodeMirror.applyOp(opPart.o, source);
 
-      if (opPart.p && opPart.p.length === 1 && opPart.p[0] === key && opPart.t === 'text') {
-        shareDBCodeMirror.applyOp(opPart.o, source);
+            } else if (verbose) {
+                console.log('ShareDBCodeMirror: ignoring op because of path or type:',
+                    opPart);
+            }
+        }
 
-      } else if (verbose) {
-        console.log('ShareDBCodeMirror: ignoring op because of path or type:', opPart);
-      }
-    }
-
-    shareDBCodeMirror.assertValue(shareDoc.data[key]);
-  }
-
-  shareDoc.subscribe(function(err) {
-    if (err) {
-      if (callback) {
-        callback(err);
-        return;
-      } else {
-        throw err;
-      }
+        shareDBCodeMirror.assertValue(shareDoc.data[key]);
     }
 
-    if (!shareDoc.type) {
-      if (verbose) {
-        console.log('ShareDBCodeMirror: creating as text');
-      }
-      var newDoc = {};
-      newDoc[key] = '';
-      shareDoc.create(newDoc);
-    }
+    shareDoc.subscribe(function(err) {
+        
+        if (err) {
+            if (callback) {
+                callback(err);
+                return;
+            } else {
+                throw err;
+            }
+        }
 
-    if (verbose) {
-      console.log('ShareDBCodeMirror: Subscribed to doc');
-    }
+       
+        if (!shareDoc.type) {
+            if (verbose) {
+                console.log('ShareDBCodeMirror: creating as text');
+            }
+            var newDoc = {};
+            newDoc[key] = '';
 
-    shareDBCodeMirror.setValue(shareDoc.data[key] || '');
+            //shareDoc.create(newDoc);
+            shareDoc.create([{
+                insert: 'Hi!'
+            }],'rich-text');
+        }
 
-    if (callback) {
-      callback(null);
-    }
-  });
+        if (verbose) {
+            console.log('ShareDBCodeMirror: Subscribed to doc');
+        }
 
-  return shareDBCodeMirror;
+         console.error(shareDoc.data.data)
+
+        shareDBCodeMirror.setValue(shareDoc.data[key] || '');
+
+        if (callback) {
+            callback(null);
+        }
+    });
+
+    return shareDBCodeMirror;
 };
 
 /**
@@ -121,12 +140,12 @@ ShareDBCodeMirror.attachDocToCodeMirror = function(shareDoc, codeMirror, options
  * will also call this, if necessary.
  */
 ShareDBCodeMirror.prototype.start = function() {
-  if (this._started) {
-    return;
-  }
-  this.codeMirror.on('change', this._changeListener);
-  this._started = true;
-  this.onStart();
+    if (this._started) {
+        return;
+    }
+    this.codeMirror.on('change', this._changeListener);
+    this._started = true;
+    this.onStart();
 };
 
 /**
@@ -134,19 +153,19 @@ ShareDBCodeMirror.prototype.start = function() {
  * starts listening for changes.
  */
 ShareDBCodeMirror.prototype.setValue = function(text) {
-  if (!this._started) {
-    this.start();
-  }
-  this._suppressChange = true;
-  this.codeMirror.setValue(text);
-  this._suppressChange = false;
+    if (!this._started) {
+        this.start();
+    }
+    this._suppressChange = true;
+    this.codeMirror.setValue(text);
+    this._suppressChange = false;
 };
 
 /**
  * Convenience - returns the text in the CodeMirror instance.
  */
 ShareDBCodeMirror.prototype.getValue = function() {
-  return this.codeMirror.getValue();
+    return this.codeMirror.getValue();
 };
 
 /**
@@ -159,22 +178,22 @@ ShareDBCodeMirror.prototype.getValue = function() {
  *    CodeMirror instance, false otherwise.
  */
 ShareDBCodeMirror.prototype.assertValue = function(expectedValue) {
-  var editorValue = this.codeMirror.getValue();
+    var editorValue = this.codeMirror.getValue();
 
-  if (expectedValue !== editorValue) {
-    console.error(
-      "Value in CodeMirror doesn't match expected value:\n\n",
-      "Expected Value:\n", expectedValue,
-      "\n\nEditor Value:\n", editorValue);
+    if (expectedValue !== editorValue) {
+        console.error(
+            "Value in CodeMirror doesn't match expected value:\n\n",
+            "Expected Value:\n", expectedValue,
+            "\n\nEditor Value:\n", editorValue);
 
-    this._suppressChange = true;
-    this.codeMirror.setValue(expectedValue);
-    this._suppressChange = false;
+        this._suppressChange = true;
+        this.codeMirror.setValue(expectedValue);
+        this._suppressChange = false;
 
-    return false;
-  }
+        return false;
+    }
 
-  return true;
+    return true;
 };
 
 /**
@@ -184,122 +203,127 @@ ShareDBCodeMirror.prototype.assertValue = function(expectedValue) {
  * in. This will be the second argument to an "op" listener on a ShareDB doc.
  */
 ShareDBCodeMirror.prototype.applyOp = function(op, source) {
-  if (source === undefined) {
-    throw new Error("The 'source' argument must be provided");
-  }
-
-  if (!Array.isArray(op)) {
-    throw new Error("Unexpected non-Array op for text document");
-  }
-
-  if (!this._started) {
-    if (this.verbose) {
-      console.log('ShareDBCodeMirror: op received while not running, ignored', op);
+    if (source === undefined) {
+        throw new Error("The 'source' argument must be provided");
     }
-    return;
-  }
 
-  if (source === CODE_MIRROR_OP_SOURCE) {
-    if (this.verbose) {
-      console.log('ShareDBCodeMirror: skipping local op', op);
+    if (!Array.isArray(op)) {
+        throw new Error("Unexpected non-Array op for text document");
     }
-    return;
-  }
 
-  if (this.verbose) {
-    console.log('ShareDBCodeMirror: applying op', op);
-  }
+    if (!this._started) {
+        if (this.verbose) {
+            console.log('ShareDBCodeMirror: op received while not running, ignored',
+                op);
+        }
+        return;
+    }
 
-  this._suppressChange = true;
-  this._applyChangesFromOp(op);
-  this._suppressChange = false;
+    if (source === CODE_MIRROR_OP_SOURCE) {
+        if (this.verbose) {
+            console.log('ShareDBCodeMirror: skipping local op', op);
+        }
+        return;
+    }
+
+    if (this.verbose) {
+        console.log('ShareDBCodeMirror: applying op', op);
+    }
+
+    this._suppressChange = true;
+    this._applyChangesFromOp(op);
+    this._suppressChange = false;
 };
 
 /**
  * Stops listening for changes from the CodeMirror instance.
  */
 ShareDBCodeMirror.prototype.stop = function() {
-  if (!this._started) {
-    return;
-  }
-  this.codeMirror.off('change', this._changeListener);
-  this._started = false;
-  this.onStop();
+    if (!this._started) {
+        return;
+    }
+    this.codeMirror.off('change', this._changeListener);
+    this._started = false;
+    this.onStop();
 };
 
 ShareDBCodeMirror.prototype._applyChangesFromOp = function(op) {
-  var textIndex = 0;
-  var codeMirror = this.codeMirror;
+    var textIndex = 0;
+    var codeMirror = this.codeMirror;
 
-  op.forEach(function(part) {
-    switch (typeof part) {
-      case 'number': // skip n chars
-        textIndex += part;
-        break;
-      case 'string': // "chars" - insert "chars"
-        codeMirror.replaceRange(part, codeMirror.posFromIndex(textIndex));
-        textIndex += part.length;
-        break;
-      case 'object': // {d: num} - delete `num` chars
-        var from = codeMirror.posFromIndex(textIndex);
-        var to = codeMirror.posFromIndex(textIndex + part.d);
-        codeMirror.replaceRange('', from, to);
-        break;
-    }
-  });
+    op.forEach(function(part) {
+        switch (typeof part) {
+            case 'number': // skip n chars
+                textIndex += part;
+                break;
+            case 'string': // "chars" - insert "chars"
+                codeMirror.replaceRange(part, codeMirror.posFromIndex(textIndex));
+                textIndex += part.length;
+                break;
+            case 'object': // {d: num} - delete `num` chars
+                var from = codeMirror.posFromIndex(textIndex);
+                var to = codeMirror.posFromIndex(textIndex + part.d);
+                codeMirror.replaceRange('', from, to);
+                break;
+        }
+    });
 };
 
 ShareDBCodeMirror.prototype._handleChange = function(codeMirror, change) {
-  if (this._suppressChange) {
-    return;
-  }
+    if (this._suppressChange) {
+        return;
+    }
 
-  var op = this._createOpFromChange(change);
+    var op = this._createOpFromChange(change);
 
-  if (this.verbose) {
-    console.log('ShareDBCodeMirror: produced op', op);
-  }
+    if (this.verbose) {
+        console.log('ShareDBCodeMirror: produced op', op);
+    }
+    
 
-  this.onOp(op, CODE_MIRROR_OP_SOURCE);
+
+    this.onOp(op, CODE_MIRROR_OP_SOURCE);
 };
 
 ShareDBCodeMirror.prototype._createOpFromChange = function(change) {
-  var codeMirror = this.codeMirror;
-  var op = [];
-  var textIndex = 0;
-  var startLine = change.from.line;
+    var codeMirror = this.codeMirror;
+    var op = [];
+    var textIndex = 0;
+    var startLine = change.from.line;
 
-  for (var i = 0; i < startLine; i++) {
-    textIndex += codeMirror.lineInfo(i).text.length + 1; // + 1 for '\n'
-  }
-
-  textIndex += change.from.ch;
-
-  if (textIndex > 0) {
-    op.push(textIndex); // skip textIndex chars
-  }
-
-  if (change.to.line !== change.from.line || change.to.ch !== change.from.ch) {
-    var delLen = 0;
-    var numLinesRemoved = change.removed.length;
-
-    for (var i = 0; i < numLinesRemoved; i++) {
-      delLen += change.removed[i].length + 1; // +1 for '\n'
+    for (var i = 0; i < startLine; i++) {
+        textIndex += codeMirror.lineInfo(i).text.length + 1; // + 1 for '\n'
     }
 
-    delLen -= 1; // last '\n' shouldn't be included
+    textIndex += change.from.ch;
 
-    op.push({d: delLen}) // delete delLen chars
-  }
-
-  if (change.text) {
-    var text = change.text.join('\n');
-    if (text) {
-      op.push(text); // insert text
+    if (textIndex > 0) {
+        op.push(textIndex); // skip textIndex chars
     }
-  }
 
-  return op;
+    if (change.to.line !== change.from.line || change.to.ch !== change.from.ch) {
+        var delLen = 0;
+        var numLinesRemoved = change.removed.length;
+
+        for (var i = 0; i < numLinesRemoved; i++) {
+            delLen += change.removed[i].length + 1; // +1 for '\n'
+        }
+
+        delLen -= 1; // last '\n' shouldn't be included
+
+        op.push({
+            d: delLen
+        }) // delete delLen chars
+    }
+
+    if (change.text) {
+        var text = change.text.join('\n');
+        if (text) {
+            op.push(text); // insert text
+        }
+    }
+
+    return op;
 };
 
 /* codemirror/lib/codemirror.js */
@@ -25567,6 +25591,7 @@ Object.defineProperty(ObserverSync.prototype, 'paths', {
 (function() {
     'use strict';
 
+
     var applyConfig = function(path, value) {
         if (typeof(value) === 'object') {
             for(var key in value) {
@@ -30052,11 +30077,10 @@ editor.once('load', function() {
     });
 
     editor.method('editor:loadAssetFile', function (fn) {
-       
         if (! assetDocument)
             return fn(new Error("Asset not loaded"));
 
-        var filename = assetDocument.data.file.filename;
+        var filename = assetDocument.data.data.file.filename;
 
         Ajax({
             url: '{{url.api}}/assets/{{asset.id}}/file/' + filename,
@@ -30072,13 +30096,13 @@ editor.once('load', function() {
     });
 
     editor.method('editor:save', function () {
+       
         if (! editor.call('editor:canSave'))
             return;
-
+ 
         isSaving = true;
-
         editor.emit('editor:save:start');
-
+ alert(textDocument.hasPending())
         if (textDocument.hasPending()) {
             // wait for pending data to be sent and
             // acknowledged by the server before saving
@@ -30172,6 +30196,8 @@ editor.once('load', function() {
             var sharejsMessage = connection.socket.onmessage;
 
             connection.socket.onmessage = function(msg) {
+
+              //  alert(JSON.stringify(msg))
                 try {
                     if (msg.data.startsWith('auth')) {
                         if (!auth) {
@@ -30278,36 +30304,34 @@ editor.once('load', function() {
         };
 
         var loadDocument = function() {
-            
             textDocument = connection.get('documents', '' + config.asset.id);
 
             // error
             textDocument.on('error', onError);
-   
+
             // every time we subscribe to the document
             // (so on reconnects too) listen for the 'ready' event
             // and when ready check if the document content is different
             // than the asset content in order to activate the REVERT button
-            
-                textDocument.subscribe(function(err) {
+            // textDocument.on('subscribe', function () {
+            //     // if we have a permanent error we need to reload the page
+            //     // so don't continue
+            //     if (hasError)
+            //         return;
+
+                // ready to sync
+                textDocument.on("load",function () {
                    
-                  if (err) throw err;
-                  isLoading = false;
-                    //todo
+                    // notify of scene load
+                    isLoading = false;
+
                     if (! editingContext) {
-                        editingContext = textDocument;//textDocument.createContext();
+                        editingContext = textDocument;
                     }
 
-                    var cm = editor.call('editor:codemirror');
-                    ShareDBCodeMirror.attachDocToCodeMirror(textDocument, cm, {
-                      key: 'content',
-                      verbose: true
-                    });
-
-
+                            
                     documentContent = textDocument.data;
 
-                    console.log(documentContent)
 
                     if (! loadedScriptOnce) {
                         editor.emit('editor:loadScript', documentContent);
@@ -30316,38 +30340,15 @@ editor.once('load', function() {
                         editor.emit('editor:reloadScript', documentContent);
                     }
 
-                    //checkIfDirty();
+                    checkIfDirty();
                 });
-                // ready to sync
-            //     textDocument.on("load",function () {
-            //         // notify of scene load
-            //         isLoading = false;
-            //         //todo
-            //         if (! editingContext) {
-            //             editingContext = textDocument;//textDocument.createContext();
-            //         }
+            //});
 
-            //         documentContent = textDocument.data;
-
-            //         //alert(documentContent)
-
-            //         if (! loadedScriptOnce) {
-            //             editor.emit('editor:loadScript', documentContent);
-            //             loadedScriptOnce = true;
-            //         } else {
-            //             editor.emit('editor:reloadScript', documentContent);
-            //         }
-
-            //         checkIfDirty();
-            //     });
-            
-
-            // // // subscribe for realtime events
-            //  textDocument.subscribe();
+            // subscribe for realtime events
+            textDocument.subscribe();
         };
 
         var loadAsset = function() {
-
             // load asset document too
             assetDocument = connection.get('assets', '' + config.asset.id);
 
@@ -30374,12 +30375,10 @@ editor.once('load', function() {
             //         return;
 
                 assetDocument.on("load",function() {
-                    
                     // load asset file to check if it has different contents
                     // than the sharejs document, so that we can enable the
                     // SAVE button if that is the case.
                     editor.call('editor:loadAssetFile', function (err, data) {
-                        
                         if (err) {
                             onError('Could not load asset file - please try again later.');
                             return;
@@ -30391,7 +30390,7 @@ editor.once('load', function() {
                 });
             //});
 
-             assetDocument.subscribe();
+            assetDocument.subscribe();
         };
 
         editor.method('realtime:send', function(name, data) {
@@ -30439,8 +30438,10 @@ editor.once('load', function () {
     });
 
     editor.method('editor:save', function () {
-        if (! editor.call('editor:canSave')) return;
 
+        alert(133)
+        if (! editor.call('editor:canSave')) return;
+alert(2)
         isSaving = true;
 
         editor.emit('editor:save:start');
@@ -30476,6 +30477,7 @@ editor.once('load', function () {
     });
 
     editor.method('editor:loadScript', function () {
+        alert(3)
         var data = {
             url: '/api/projects/{{project.id}}/repositories/directory/sourcefiles/{{file.name}}',
             method: 'GET',
@@ -30818,16 +30820,16 @@ editor.once('load', function () {
     // use 'beforeChange' event so that
     // we capture the state of the document before it's changed.
     // This is so that we send correct operations to sharejs.
-    // codeMirror.on('beforeChange', function (cm, change) {
-    //     if (isLoading) return;
-    //     editor.emit('editor:change', cm, change);
-    // });
-    //
-    // // called after a change has been made
-    // codeMirror.on('change', function (cm, change) {
-    //     if (isLoading) return;
-    //     editor.emit('editor:afterChange', cm, change);
-    // });
+    codeMirror.on('beforeChange', function (cm, change) {
+        if (isLoading) return;
+        editor.emit('editor:change', cm, change);
+    });
+
+    // called after a change has been made
+    codeMirror.on('change', function (cm, change) {
+        if (isLoading) return;
+        editor.emit('editor:afterChange', cm, change);
+    });
 
     var stateBeforeReadOnly = null;
 
@@ -30903,572 +30905,620 @@ editor.once('load', function () {
 });
 
 
-// /* code_editor/editor-codemirror-realtime.js */
-// // credit to https://github.com/share/share-codemirror
-// // most of the code in here is taken from there
-//
-// editor.once('load', function () {
-//     'use strict';
-//
-//     if (!config.asset)
-//         return;
-//
-//     // editor
-//     var cm = editor.call('editor:codemirror');
-//
-//
-//     // sharejs document context
-//     var share;
-//
-//     var undoStack = [];
-//     var redoStack = [];
-//
-//     var MAX_UNDO_SIZE = 200;
-//
-//     // amount of time to merge local edits into one
-//     var delay = 2000;
-//
-//     // amount of time since last local edit
-//     var lastEditTime = 0;
-//
-//     // if true then the last two ops will be concatenated no matter what
-//     var forceConcatenate = false;
-//
-//     var isConnected = false;
-//
-//     var lastChangedLine = null;
-//     var changedLine = null;
-//
-//     editor.method('editor:realtime:mergeOps', function (force) {
-//         forceConcatenate = force;
-//     });
-//
-//
-//     // create local copy of insert operation
-//     var createInsertOp = function (pos, text) {
-//         return customOp(
-//             pos ? [pos, text] : [text]
-//         );
-//     };
-//
-//     // create local copy of remove operation
-//     var createRemoveOp = function (pos, length, text) {
-//         var result = customOp(
-//             pos ? [pos, {d: length}] : [{d: length}]
-//         );
-//
-//         // if text exists remember if it's whitespace
-//         // so that we concatenate multiple whitespaces together
-//         if (text) {
-//             if (/^[ ]+$/.test(text)) {
-//                 result.isWhiteSpace = true;
-//             } else if (/^\n+$/.test(text)) {
-//                 result.isWhiteSpace = true;
-//                 result.isNewLine = true;
-//             }
-//         }
-//
-//         return result;
-//     };
-//
-//     // Returns an object that represents an operation
-//     // result.op - the operation
-//     // result.time - the time when the operation was created (used to concatenate adjacent operations)
-//     var customOp = function (op) {
-//         return {
-//             op: op,
-//             time: Date.now()
-//         };
-//     };
-//
-//     // returns true if the two operations can be concatenated
-//     var canConcatOps = function (prev, next) {
-//         if (forceConcatenate)
-//             return true;
-//         console.error(prev.op)
-//                 console.error(prev.op)
-//
-//         var prevLen = prev.op.length;
-//         var nextLen = next.op.length;
-//
-//         // true if both are noops
-//         if (prevLen === 0 || nextLen === 0) {
-//             return true;
-//         }
-//
-//         var prevDelete = false;
-//         for (var i = 0; i < prevLen; i++) {
-//             if (typeof(prev.op[i]) === 'object') {
-//                 prevDelete = true;
-//                 break;
-//             }
-//         }
-//
-//         var nextDelete = false;
-//         for (var i = 0; i < nextLen; i++) {
-//             if (typeof(next.op[i]) === 'object') {
-//                 nextDelete = true;
-//                 break;
-//             }
-//         }
-//
-//
-//         // if one of the ops is a delete op and the other an insert op return false
-//         if (prevDelete !== nextDelete) {
-//             return false;
-//         }
-//
-//         // if we added a whitespace after a non-whitespace return false
-//         if (next.isWhiteSpace && !prev.isWhiteSpace)
-//             return false;
-//
-//         // check if the two ops are on different lines
-//         if (changedLine !== lastChangedLine) {
-//             // allow multiple whitespaces to be concatenated
-//             // on different lines unless the previous op is a new line
-//             if (prev.isWhiteSpace && !prev.isNewLine) {
-//                 return false;
-//             }
-//
-//             // don't allow concatenating multiple inserts in different lines
-//             if (!next.isWhiteSpace && !prev.isWhiteSpace)
-//                 return false;
-//         }
-//
-//         return true;
-//     };
-//
-//     // transform first operation against second operation
-//     // priority is either 'left' or 'right' to break ties
-//     var transform = function (op1, op2, priority) {
-//         return share._doc.type.transform(op1, op2, priority);
-//     };
-//
-//     // concatenate two ops
-//     var concat = function (prev, next) {
-//         if (! next.isWhiteSpace) {
-//             prev.isWhiteSpace = false;
-//             prev.isNewLine = false;
-//         } else {
-//             if (next.isNewLine)
-//                 prev.isNewLine = true;
-//         }
-//         prev.op=share._tryCompose(next.op)
-//        // prev.op = share._doc.type.compose(next.op, prev.op);
-//     };
-//
-//     // invert an op an return the result
-//     var invert = function (op, snapshot) {
-//         return share._doc.type.semanticInvert(snapshot, op);
-//     };
-//
-//     // transform undo and redo operations against the new remote operation
-//     var transformStacks = function (remoteOp) {
-//         var i = undoStack.length;
-//         var initialRemoteOp = remoteOp.op;
-//
-//         while (i--) {
-//             var localOp = undoStack[i];
-//             var old = localOp.op;
-//             localOp.op = transform(localOp.op, remoteOp.op, 'left');
-//
-//             // remove noop
-//             if (localOp.op.length === 0 || (localOp.op.length === 1 && typeof localOp.op === 'object' && localOp.op.d === 0)) {
-//                 undoStack.splice(i, 1);
-//             } else {
-//                 remoteOp.op = transform(remoteOp.op, old, 'right');
-//             }
-//         }
-//
-//         remoteOp.op = initialRemoteOp;
-//         i = redoStack.length;
-//         while (i--) {
-//             var localOp = redoStack[i] ;
-//             var old = localOp.op;
-//             localOp.op = transform(localOp.op, remoteOp.op, 'left');
-//
-//             // remove noop
-//             if (localOp.op.length === 0 || (localOp.op.length === 1 && typeof localOp.op === 'object' && localOp.op.d === 0)) {
-//                 redoStack.splice(i, 1);
-//             } else {
-//                 remoteOp.op = transform(remoteOp.op, old, 'right');
-//             }
-//         }
-//
-//         //console.log('transform', remoteOp.op);
-//         //printStacks();
-//     };
-//
-//     // creates dummy operation in order to move the cursor
-//     // correctly when remote ops are happening
-//     var createCursorOp = function (pos) {
-//         return createInsertOp(cm.indexFromPos(pos), ' ');
-//     };
-//
-//     // create 2 ops if anchor and head are different or 1 if they are the same (which is just a cursor..)
-//     var createCursorOpsFromSelection = function (selection) {
-//         return selection.anchor === selection.head ?
-//                createCursorOp(selection.anchor) :
-//                [createCursorOp(selection.anchor), createCursorOp(selection.head)];
-//     };
-//
-//     // transform dummy ops with remote op
-//     var transformCursorOps = function (ops, remoteOp) {
-//         for (var i = 0, len = ops.length; i < len; i++) {
-//             var data = ops[i];
-//             if (data.length) {
-//                 for (var j = 0; j < data.length; j++) {
-//                     data[j].op = transform(data[j].op, remoteOp, 'right')
-//                 }
-//             } else {
-//                 data.op = transform(data.op, remoteOp, 'right');
-//             }
-//         }
-//     };
-//
-//     var posFromCursorOp = function (cursorOp) {
-//         return cm.posFromIndex(cursorOp.op.length > 1 ? cursorOp.op[0] : 0);
-//     };
-//
-//     var restoreSelectionsOptions = {
-//         scroll: false
-//     };
-//
-//     // restore selections after remote ops
-//     var restoreSelections = function (cursorOps) {
-//         for (var i = 0, len = cursorOps.length; i < len; i++) {
-//             var data = cursorOps[i];
-//             var start,end;
-//
-//             if (data.length) {
-//                 start = posFromCursorOp(data[0]);
-//                 end = posFromCursorOp(data[1]);
-//             } else {
-//                 start = posFromCursorOp(data);
-//                 end = start;
-//             }
-//
-//             cm.addSelection(start, end, restoreSelectionsOptions);
-//         }
-//     };
-//
-//     // Called when the script / asset is loaded
-//     var onLoaded = function () {
-//         share = editor.call('realtime:context');
-//
-//          ShareDBCodeMirror.attachDocToCodeMirror(share, cm, {
-//                       key: 'content',
-//                       verbose: true
-//                     });
-//
-//         // insert server -> local
-//         // share.onInsert = function (pos, text) {
-//         //     // transform undos / redos with new remote op
-//         //     var remoteOp = createInsertOp(pos, text);
-//         //     transformStacks(remoteOp);
-//
-//         //     // apply the operation locally
-//         //     suppress = true;
-//         //     var from = cm.posFromIndex(pos);
-//
-//         //     // get selections before we change the contents
-//         //     var selections = cm.listSelections();
-//         //     var cursorOps = selections.map(createCursorOpsFromSelection);
-//         //     transformCursorOps(cursorOps, remoteOp.op);
-//
-//         //     cm.replaceRange(text, from);
-//
-//         //     // restore selections after we set the content
-//         //     restoreSelections(cursorOps);
-//
-//         //     suppress = false;
-//         // };
-//
-//         // // remove server -> local
-//         // share.onRemove = function (pos, length) {
-//         //     suppress = true;
-//         //     var from = cm.posFromIndex(pos);
-//         //     var to = cm.posFromIndex(pos + length);
-//
-//         //     // add remote operation to the edits stack
-//         //     var remoteOp = createRemoveOp(pos, length);
-//         //     transformStacks(remoteOp);
-//
-//         //     // get selections before we change the contents
-//         //     var selections = cm.listSelections();
-//         //     var cursorOps = selections.map(createCursorOpsFromSelection);
-//         //     transformCursorOps(cursorOps, remoteOp.op);
-//
-//         //     // apply operation locally
-//         //     cm.replaceRange('', from, to);
-//
-//         //     // restore selections after we set the content
-//         //     restoreSelections(cursorOps);
-//
-//         //     suppress = false;
-//         // };
-//
-//         isConnected = true;
-//     };
-//
-//     editor.on('editor:loadScript', onLoaded);
-//
-//     // editor.on('realtime:disconnected', function () {
-//     //     isConnected = false;
-//     // });
-//
-//     // debug function
-//     var printStacks = function () {
-//         console.log('undo');
-//         undoStack.forEach(function (i) {
-//             console.log(i.op);
-//         });
-//
-//         console.log('redo');
-//         redoStack.forEach(function (i) {
-//             console.log(i.op);
-//         });
-//     };
-//
-//
-//     // Called when the user presses keys to Undo
-//     editor.method('editor:undo', function () {
-//         if (!isConnected || ! undoStack.length) return;
-//
-//         var snapshot = share.get() || '';
-//         var curr = undoStack.pop();
-//
-//         var inverseOp = {op: invert(curr.op, snapshot)};
-//         redoStack.push(inverseOp);
-//
-//         applyCustomOp(curr.op);
-//
-//         //printStacks();
-//     });
-//
-//     // Called when the user presses keys to Redo
-//     editor.method('editor:redo', function () {
-//         if (! isConnected || !redoStack.length) return;
-//
-//         var snapshot = share.get() || '';
-//         var curr = redoStack.pop();
-//
-//         var inverseOp = {op: invert(curr.op, snapshot)};
-//         undoStack.push(inverseOp);
-//
-//         applyCustomOp(curr.op);
-//
-//         //printStacks();
-//     });
-//
-//     // Applies an operation to the sharejs document
-//     // and sets the result to the editor
-//     var applyCustomOp = function (op) {
-//         share.submitOp(op, function (err) {
-//             if (err) {
-//                 console.error(err);
-//                 editor.emit('realtime:error', err);
-//                 return;
-//             }
-//         });
-//
-//         var scrollInfo = cm.getScrollInfo();
-//
-//         // remember folded positions
-//         var folds = cm.findMarks(
-//             CodeMirror.Pos(cm.firstLine(), 0),
-//             CodeMirror.Pos(cm.lastLine(), 0)
-//         ).filter(function (mark) {
-//             return mark.__isFold
-//         });
-//
-//         // transform folded positions with op
-//         var foldOps;
-//         if (folds.length) {
-//             foldOps = [];
-//             for (var i = 0; i < folds.length; i++) {
-//                 var pos = CodeMirror.Pos(folds[i].lines[0].lineNo(), 0);
-//                 foldOps.push(createCursorOp(pos));
-//             }
-//
-//             transformCursorOps(foldOps, op);
-//         }
-//
-//         suppress = true;
-//         cm.setValue(share.get() || '');
-//         suppress = false;
-//
-//         // restore folds because after cm.setValue they will all be lost
-//         if (foldOps) {
-//             for (var i = 0; i < foldOps.length; i++) {
-//                 var pos = posFromCursorOp(foldOps[i]);
-//                 cm.foldCode(pos);
-//             }
-//         }
-//
-//         // set cursor
-//         // put it after the text if text was inserted
-//         // or keep at the the delete position if text was deleted
-//         var cursor = 0;
-//         if (op.length === 1) {
-//             if (typeof op[0] === 'string') {
-//                 cursor += op[0].length;
-//             }
-//         } else if (op.length > 1) {
-//             cursor = op[0];
-//             if (typeof op[1] === 'string') {
-//                 cursor += op[1].length;
-//             }
-//         }
-//
-//         var cursorPos = cm.posFromIndex(cursor);
-//         var cursorCoords = cm.cursorCoords(cursorPos, 'local');
-//
-//         cm.setCursor(cursorPos);
-//
-//         // scroll back to where we were if needed
-//         if (cursorCoords.top >= scrollInfo.top && cursorCoords.top <= scrollInfo.top + scrollInfo.clientHeight) {
-//             cm.scrollTo(scrollInfo.left, scrollInfo.top);
-//         }
-//
-//         // instantly flush changes
-//         // share._doc.resume();
-//         // share._doc.pause();
-//     };
-//
-//     var suppress = false;
-//
-//
-//
-//     // local -> server
-//     editor.on('editor:change', function (cm, change) {
-//         if (!share || suppress) return;
-//
-//         //applyToShareJS(cm, change);
-//
-//
-//
-//         // clear redo stack
-//         redoStack.length = 0;
-//
-//     });
-//
-//     // // started saving so flush changes
-//     // editor.on('editor:save:start', function () {
-//     //     flushInterval();
-//     // });
-//
-//     // editor.on('editor:beforeQuit', function () {
-//     //     // flush changes before leaving the window
-//     //     flushInterval();
-//     // });
-//
-//     // add local op to undo history
-//     var addToHistory = function (localOp) {
-//         // try to concatenate new op with latest op in the undo stack
-//         var timeSinceLastEdit = localOp.time - lastEditTime;
-//         if (timeSinceLastEdit <= delay || forceConcatenate) {
-//             var prev = undoStack[undoStack.length-1];
-//             if (prev && canConcatOps(prev, localOp)) {
-//                 concat(prev, localOp);
-//                 return;
-//             }
-//         }
-//
-//         // cannot concatenate so push new op
-//         undoStack.push(localOp);
-//
-//         // make sure our undo stack doens't get too big
-//         if (undoStack.length > MAX_UNDO_SIZE) {
-//             undoStack.splice(0, 1);
-//         }
-//
-//         // update lastEditTime
-//         lastEditTime = Date.now();
-//     };
-//
-//     // Flush changes to the server
-//     // and pause until next flushInterval
-//     // var flushInterval = function () {
-//     //     if (share && share._doc) {
-//     //         share._doc.resume();
-//     //         share._doc.pause();
-//     //     }
-//     // };
-//
-//     // flush changes to server every once in a while
-//     // setInterval(flushInterval, 500);
-//
-//     // Convert a CodeMirror change into an op understood by share.js
-//     function applyToShareJS(cm, change) {
-//         var startPos = 0;  // Get character position from # of chars in each line.
-//         var i = 0;         // i goes through all lines.
-//         var text;
-//         var op;
-//
-//         lastChangedLine = changedLine || change.from.line;
-//         changedLine = change.from.line;
-//
-//         while (i < change.from.line) {
-//             startPos += cm.lineInfo(i).text.length + 1;   // Add 1 for '\n'
-//             i++;
-//         }
-//
-//         startPos += change.from.ch;
-//
-//         // handle delete
-//         if (change.to.line != change.from.line || change.to.ch != change.from.ch) {
-//             text = cm.getRange(change.from, change.to);
-//
-//             if (text) {
-//                 op = createInsertOp(startPos, text);
-//                 addToHistory(op);
-//
-//                //share.remove(startPos, text.length);
-// share.submitOp(op)
-//                 // force concatenation of subsequent ops for this frame
-//                 forceConcatenate = true;
-//             }
-//         }
-//
-//         // handle insert
-//         if (change.text) {
-//             text = change.text.join('\n');
-//
-//             if (text) {
-//                 op = createRemoveOp(startPos, text.length, text);
-//                 addToHistory(op);
-//                 share.submitOp(op)
-//
-//                 //share.insert(startPos, text);
-//
-//                 // force concatenation of subsequent ops for this frame
-//                 forceConcatenate = true;
-//             }
-//         }
-//
-//         if (change.next) {
-//             applyToShareJS(cm, change.next);
-//         }
-//
-//         // restore forceConcatenate after 1 frame
-//         // do it in a timeout so that operations done
-//         // by multiple cursors for example are treated as one
-//         setTimeout(function () {
-//             forceConcatenate = false;
-//         });
-//     }
-//
-//     // function print (text) {
-//     //     var chars = [];
-//     //     if (! text) return chars;
-//
-//     //     for (var i = 0; i < text.length; i++)
-//     //         chars.push(text.charCodeAt(i));
-//
-//     //     return chars;
-//     // }
-// });
+/* code_editor/editor-codemirror-realtime.js */
+// credit to https://github.com/share/share-codemirror
+// most of the code in here is taken from there
+
+
+editor.once('load', function () {
+    'use strict';
+
+    if (!config.asset)
+        return;
+
+    // editor
+    var cm = editor.call('editor:codemirror');
+    // sharejs document context
+    var share;
+
+    var undoStack = [];
+    var redoStack = [];
+
+    var MAX_UNDO_SIZE = 200;
+
+    // amount of time to merge local edits into one
+    var delay = 2000;
+
+    // amount of time since last local edit
+    var lastEditTime = 0;
+
+    // if true then the last two ops will be concatenated no matter what
+    var forceConcatenate = false;
+
+    var isConnected = false;
+
+    var lastChangedLine = null;
+    var changedLine = null;
+
+    editor.method('editor:realtime:mergeOps', function (force) {
+        forceConcatenate = force;
+    });
+
+
+    // create local copy of insert operation
+    var createInsertOp = function (pos, text) {
+        return customOp(
+            pos ? [pos, text] : [text]
+        );
+    };
+
+    // create local copy of remove operation
+    var createRemoveOp = function (pos, length, text) {
+        var result = customOp(
+            pos ? [pos, {d: length}] : [{d: length}]
+        );
+
+        // if text exists remember if it's whitespace
+        // so that we concatenate multiple whitespaces together
+        if (text) {
+            if (/^[ ]+$/.test(text)) {
+                result.isWhiteSpace = true;
+            } else if (/^\n+$/.test(text)) {
+                result.isWhiteSpace = true;
+                result.isNewLine = true;
+            }
+        }
+
+        return result;
+    };
+
+    // Returns an object that represents an operation
+    // result.op - the operation
+    // result.time - the time when the operation was created (used to concatenate adjacent operations)
+    var customOp = function (op) {
+        return {
+            op: op,
+            time: Date.now()
+        };
+    };
+
+    // returns true if the two operations can be concatenated
+    var canConcatOps = function (prev, next) {
+        if (forceConcatenate)
+            return true;
+
+        var prevLen = prev.op.length;
+        var nextLen = next.op.length;
+
+        // true if both are noops
+        if (prevLen === 0 || nextLen === 0) {
+            return true;
+        }
+
+        var prevDelete = false;
+        for (var i = 0; i < prevLen; i++) {
+            if (typeof(prev.op[i]) === 'object') {
+                prevDelete = true;
+                break;
+            }
+        }
+
+        var nextDelete = false;
+        for (var i = 0; i < nextLen; i++) {
+            if (typeof(next.op[i]) === 'object') {
+                nextDelete = true;
+                break;
+            }
+        }
+
+
+        // if one of the ops is a delete op and the other an insert op return false
+        if (prevDelete !== nextDelete) {
+            return false;
+        }
+
+        // if we added a whitespace after a non-whitespace return false
+        if (next.isWhiteSpace && !prev.isWhiteSpace)
+            return false;
+
+        // check if the two ops are on different lines
+        if (changedLine !== lastChangedLine) {
+            // allow multiple whitespaces to be concatenated
+            // on different lines unless the previous op is a new line
+            if (prev.isWhiteSpace && !prev.isNewLine) {
+                return false;
+            }
+
+            // don't allow concatenating multiple inserts in different lines
+            if (!next.isWhiteSpace && !prev.isWhiteSpace)
+                return false;
+        }
+
+        return true;
+    };
+
+    // transform first operation against second operation
+    // priority is either 'left' or 'right' to break ties
+    var transform = function (op1, op2, priority) {
+        return share.type.transform(op1, op2, priority);
+    };
+
+    // concatenate two ops
+    var concat = function (prev, next) {
+        if (! next.isWhiteSpace) {
+            prev.isWhiteSpace = false;
+            prev.isNewLine = false;
+        } else {
+            if (next.isNewLine)
+                prev.isNewLine = true;
+        }
+        
+
+        prev.op = share.type.compose(next.op, prev.op);
+    };
+
+    // invert an op an return the result
+    var invert = function (op, snapshot) {
+        return share.type.semanticInvert(snapshot, op);
+    };
+
+    // transform undo and redo operations against the new remote operation
+    var transformStacks = function (remoteOp) {
+        var i = undoStack.length;
+        var initialRemoteOp = remoteOp.op;
+
+        while (i--) {
+            var localOp = undoStack[i];
+            var old = localOp.op;
+            localOp.op = transform(localOp.op, remoteOp.op, 'left');
+
+            // remove noop
+            if (localOp.op.length === 0 || (localOp.op.length === 1 && typeof localOp.op === 'object' && localOp.op.d === 0)) {
+                undoStack.splice(i, 1);
+            } else {
+                remoteOp.op = transform(remoteOp.op, old, 'right');
+            }
+        }
+
+        remoteOp.op = initialRemoteOp;
+        i = redoStack.length;
+        while (i--) {
+            var localOp = redoStack[i] ;
+            var old = localOp.op;
+            localOp.op = transform(localOp.op, remoteOp.op, 'left');
+
+            // remove noop
+            if (localOp.op.length === 0 || (localOp.op.length === 1 && typeof localOp.op === 'object' && localOp.op.d === 0)) {
+                redoStack.splice(i, 1);
+            } else {
+                remoteOp.op = transform(remoteOp.op, old, 'right');
+            }
+        }
+
+        //console.log('transform', remoteOp.op);
+        //printStacks();
+    };
+
+    // creates dummy operation in order to move the cursor
+    // correctly when remote ops are happening
+    var createCursorOp = function (pos) {
+        return createInsertOp(cm.indexFromPos(pos), ' ');
+    };
+
+    // create 2 ops if anchor and head are different or 1 if they are the same (which is just a cursor..)
+    var createCursorOpsFromSelection = function (selection) {
+        return selection.anchor === selection.head ?
+               createCursorOp(selection.anchor) :
+               [createCursorOp(selection.anchor), createCursorOp(selection.head)];
+    };
+
+    // transform dummy ops with remote op
+    var transformCursorOps = function (ops, remoteOp) {
+        for (var i = 0, len = ops.length; i < len; i++) {
+            var data = ops[i];
+            if (data.length) {
+                for (var j = 0; j < data.length; j++) {
+                    data[j].op = transform(data[j].op, remoteOp, 'right')
+                }
+            } else {
+                data.op = transform(data.op, remoteOp, 'right');
+            }
+        }
+    };
+
+    var posFromCursorOp = function (cursorOp) {
+        return cm.posFromIndex(cursorOp.op.length > 1 ? cursorOp.op[0] : 0);
+    };
+
+    var restoreSelectionsOptions = {
+        scroll: false
+    };
+
+    // restore selections after remote ops
+    var restoreSelections = function (cursorOps) {
+        for (var i = 0, len = cursorOps.length; i < len; i++) {
+            var data = cursorOps[i];
+            var start,end;
+
+            if (data.length) {
+                start = posFromCursorOp(data[0]);
+                end = posFromCursorOp(data[1]);
+            } else {
+                start = posFromCursorOp(data);
+                end = start;
+            }
+
+            cm.addSelection(start, end, restoreSelectionsOptions);
+        }
+    };
+
+    // Called when the script / asset is loaded
+    var onLoaded = function () {
+        share = editor.call('realtime:context');
+       // alert(share.onInsert)
+        // insert server -> local
+        share.onInsert = function (pos, text) {
+            // transform undos / redos with new remote op
+            var remoteOp = createInsertOp(pos, text);
+            transformStacks(remoteOp);
+
+            // apply the operation locally
+            suppress = true;
+            var from = cm.posFromIndex(pos);
+
+            // get selections before we change the contents
+            var selections = cm.listSelections();
+            var cursorOps = selections.map(createCursorOpsFromSelection);
+            transformCursorOps(cursorOps, remoteOp.op);
+
+            cm.replaceRange(text, from);
+
+            // restore selections after we set the content
+            restoreSelections(cursorOps);
+
+            suppress = false;
+        };
+
+        // remove server -> local
+        share.onRemove = function (pos, length) {
+            suppress = true;
+            var from = cm.posFromIndex(pos);
+            var to = cm.posFromIndex(pos + length);
+
+            // add remote operation to the edits stack
+            var remoteOp = createRemoveOp(pos, length);
+            transformStacks(remoteOp);
+
+            // get selections before we change the contents
+            var selections = cm.listSelections();
+            var cursorOps = selections.map(createCursorOpsFromSelection);
+            transformCursorOps(cursorOps, remoteOp.op);
+
+            // apply operation locally
+            cm.replaceRange('', from, to);
+
+            // restore selections after we set the content
+            restoreSelections(cursorOps);
+
+            suppress = false;
+        };
+
+        isConnected = true;
+    };
+
+    editor.on('editor:loadScript', onLoaded);
+
+    // editor.on('realtime:disconnected', function () {
+    //     isConnected = false;
+    // });
+
+    // debug function
+    var printStacks = function () {
+        console.log('undo');
+        undoStack.forEach(function (i) {
+            console.log(i.op);
+        });
+
+        console.log('redo');
+        redoStack.forEach(function (i) {
+            console.log(i.op);
+        });
+    };
+
+
+    // Called when the user presses keys to Undo
+    editor.method('editor:undo', function () {
+        if (!isConnected || ! undoStack.length) return;
+
+        var snapshot = share.get() || '';
+        var curr = undoStack.pop();
+
+        var inverseOp = {op: invert(curr.op, snapshot)};
+        redoStack.push(inverseOp);
+
+        applyCustomOp(curr.op);
+
+        //printStacks();
+    });
+
+    // Called when the user presses keys to Redo
+    editor.method('editor:redo', function () {
+        if (! isConnected || !redoStack.length) return;
+
+        var snapshot = share.get() || '';
+        var curr = redoStack.pop();
+
+        var inverseOp = {op: invert(curr.op, snapshot)};
+        undoStack.push(inverseOp);
+
+        applyCustomOp(curr.op);
+
+        //printStacks();
+    });
+
+    // Applies an operation to the sharejs document
+    // and sets the result to the editor
+    var applyCustomOp = function (op) {
+        share.submitOp(op, function (err) {
+            if (err) {
+                console.error(err);
+                editor.emit('realtime:error', err);
+                return;
+            }
+        });
+
+        var scrollInfo = cm.getScrollInfo();
+
+        // remember folded positions
+        var folds = cm.findMarks(
+            CodeMirror.Pos(cm.firstLine(), 0),
+            CodeMirror.Pos(cm.lastLine(), 0)
+        ).filter(function (mark) {
+            return mark.__isFold
+        });
+
+        // transform folded positions with op
+        var foldOps;
+        if (folds.length) {
+            foldOps = [];
+            for (var i = 0; i < folds.length; i++) {
+                var pos = CodeMirror.Pos(folds[i].lines[0].lineNo(), 0);
+                foldOps.push(createCursorOp(pos));
+            }
+
+            transformCursorOps(foldOps, op);
+        }
+
+        suppress = true;
+        cm.setValue(share.get() || '');
+        suppress = false;
+
+        // restore folds because after cm.setValue they will all be lost
+        if (foldOps) {
+            for (var i = 0; i < foldOps.length; i++) {
+                var pos = posFromCursorOp(foldOps[i]);
+                cm.foldCode(pos);
+            }
+        }
+
+        // set cursor
+        // put it after the text if text was inserted
+        // or keep at the the delete position if text was deleted
+        var cursor = 0;
+        if (op.length === 1) {
+            if (typeof op[0] === 'string') {
+                cursor += op[0].length;
+            }
+        } else if (op.length > 1) {
+            cursor = op[0];
+            if (typeof op[1] === 'string') {
+                cursor += op[1].length;
+            }
+        }
+
+        var cursorPos = cm.posFromIndex(cursor);
+        var cursorCoords = cm.cursorCoords(cursorPos, 'local');
+
+        cm.setCursor(cursorPos);
+
+        // scroll back to where we were if needed
+        if (cursorCoords.top >= scrollInfo.top && cursorCoords.top <= scrollInfo.top + scrollInfo.clientHeight) {
+            cm.scrollTo(scrollInfo.left, scrollInfo.top);
+        }
+
+        // instantly flush changes
+        // share._doc.resume();
+        // share._doc.pause();
+    };
+
+    var suppress = false;
+
+    // local -> server
+    editor.on('editor:change', function (cm, change) {
+        if (!share || suppress) return;
+
+        applyToShareJS(cm, change);
+
+        // clear redo stack
+        redoStack.length = 0;
+
+    });
+
+    // // started saving so flush changes
+    // editor.on('editor:save:start', function () {
+    //     flushInterval();
+    // });
+
+    // editor.on('editor:beforeQuit', function () {
+    //     // flush changes before leaving the window
+    //     flushInterval();
+    // });
+
+    // add local op to undo history
+    var addToHistory = function (localOp) {
+        // try to concatenate new op with latest op in the undo stack
+        var timeSinceLastEdit = localOp.time - lastEditTime;
+        if (timeSinceLastEdit <= delay || forceConcatenate) {
+            var prev = undoStack[undoStack.length-1];
+            if (prev && canConcatOps(prev, localOp)) {
+                concat(prev, localOp);
+                return;
+            }
+        }
+
+        // cannot concatenate so push new op
+        undoStack.push(localOp);
+
+        // make sure our undo stack doens't get too big
+        if (undoStack.length > MAX_UNDO_SIZE) {
+            undoStack.splice(0, 1);
+        }
+
+        // update lastEditTime
+        lastEditTime = Date.now();
+    };
+
+    // Flush changes to the server
+    // and pause until next flushInterval
+    // var flushInterval = function () {
+    //     if (share && share._doc) {
+    //         share._doc.resume();
+    //         share._doc.pause();
+    //     }
+    // };
+
+    // flush changes to server every once in a while
+    // setInterval(flushInterval, 500);
+
+    // Convert a CodeMirror change into an op understood by share.js
+    function applyToShareJS(cm, change) {
+        var startPos = 0;  // Get character position from # of chars in each line.
+        var i = 0;         // i goes through all lines.
+        var text;
+        var op;
+
+        lastChangedLine = changedLine || change.from.line;
+        changedLine = change.from.line;
+
+        while (i < change.from.line) {
+            startPos += cm.lineInfo(i).text.length + 1;   // Add 1 for '\n'
+            i++;
+        }
+
+        startPos += change.from.ch;
+
+        // handle delete
+        if (change.to.line != change.from.line || change.to.ch != change.from.ch) {
+            text = cm.getRange(change.from, change.to);
+
+            if (text) {
+                op = createInsertOp(startPos, text);
+                addToHistory(op);
+                
+
+                share.type.api(share.data,share.su).remove(startPos, text.length);
+ //share.submitOp(op);
+                // force concatenation of subsequent ops for this frame
+                forceConcatenate = true;
+            }
+        }
+
+        // handle insert
+        if (change.text) {
+            text = change.text.join('\n');
+
+            if (text) {
+                op = createRemoveOp(startPos, text.length, text);
+                addToHistory(op);
+
+               
+                // share.submitOp(op);
+                var op1=_createOpFromChange(change)
+                var docOp = [op1];
+
+
+
+
+                console.error( docOp)
+            
+            
+                share.submitOp(op1, "CodeMirror");
+
+                 //share.submitOp({op:[op,[1,333]]})
+                //  console.log(share.ingestSnapshot())
+                // share.ingestSnapshot().insert(op, text);
+
+                // force concatenation of subsequent ops for this frame
+                forceConcatenate = true;
+            }
+        }
+
+        if (change.next) {
+            applyToShareJS(cm, change.next);
+        }
+
+        // restore forceConcatenate after 1 frame
+        // do it in a timeout so that operations done
+        // by multiple cursors for example are treated as one
+        setTimeout(function () {
+            forceConcatenate = false;
+        });
+    }
+
+
+
+ var _createOpFromChange = function(change) {
+    var codeMirror =cm;
+    var op = [];
+    var textIndex = 0;
+    var startLine = change.from.line;
+
+    for (var i = 0; i < startLine; i++) {
+        textIndex += codeMirror.lineInfo(i).text.length + 1; // + 1 for '\n'
+    }
+
+    textIndex += change.from.ch;
+
+    if (textIndex > 0) {
+        op.push(textIndex); // skip textIndex chars
+    }
+
+    if (change.to.line !== change.from.line || change.to.ch !== change.from.ch) {
+        var delLen = 0;
+        var numLinesRemoved = change.removed.length;
+
+        for (var i = 0; i < numLinesRemoved; i++) {
+            delLen += change.removed[i].length + 1; // +1 for '\n'
+        }
+
+        delLen -= 1; // last '\n' shouldn't be included
+
+        op.push({
+            d: delLen
+        }) // delete delLen chars
+    }
+
+    if (change.text) {
+        var text = change.text.join('\n');
+        if (text) {
+            op.push(text); // insert text
+        }
+    }
+
+    return op;
+};
+
+
+    // function print (text) {
+    //     var chars = [];
+    //     if (! text) return chars;
+
+    //     for (var i = 0; i < text.length; i++)
+    //         chars.push(text.charCodeAt(i));
+
+    //     return chars;
+    // }
+});
 
 /* code_editor/editor-toolbar.js */
 editor.once('load', function () {

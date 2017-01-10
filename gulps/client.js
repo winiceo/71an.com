@@ -71,20 +71,21 @@ module.exports = function(gulp, plugins) {
 
     gulp.task('client:watch', function() {
         // Compile LESS files
-         gulp.watch('./src/client/app/**/*.js', ['client:build']);
+         gulp.watch('./src/client/**/**/*.js', ['client:build']);
 
         // gulp.watch([
         //     './src/client/app/**/*.js'
 
         // ]).on('change', plugins.browserSync.reload);
     });
-    gulp.task("client:build",['client:editor','client:launch','client:code'],function(){
+    gulp.task("client:build",['client:editor','client:launch','client:code','client:sharedb'],function(){
+        console.log("oooo")
         plugins.browserSync.reload()
     })
 
     gulp.task('client:start',['client:clean','client:editor','client:launch','client:code','client:sharedb'], function() {
         plugins.browserSync.init({
-            proxy: "http://192.168.1.103:4444/"
+            proxy: "http://192.168.1.103:3100/"
         });
     });
 
