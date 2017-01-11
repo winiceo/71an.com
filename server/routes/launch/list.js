@@ -72,47 +72,56 @@ module.exports = function(backend,config, req, res, next) {
   };
 
 
-  let model = backend.createModel()
-  let $scenes = model.at('scenes.' + scene_id)
+  var connection = backend.connect();
+    var scenes = connection.get('scenes', scene_id);
+     
+     
+    scenes.fetch(function (err) {
+        if (err) throw err;
 
-  console.log('scenes.' + scene_id)
+        // var a=asset.data
+        // a.id=asset.id
 
-  $scenes.subscribe(function (err) {
-    if (err) return next(err);
-    var scenes = $scenes.get();
-    console.log(scenes)
-
-    getProject(scenes.project_id)
-
-  });
-  let getProject = function (pid) {
+        // options.asset=_.assign(options.asset, a);
 
 
-    let $assets = model.at('projects.' + pid)
-
-    $assets.subscribe(function (err) {
-      if (err) return next(err);
-      var assets = $assets.get();
-
-      var project = {
-        id: assets.id,
-        name: assets.name,
-        description: assets.description,
-        primaryScene: scene_id,
-        "private": true,
-        "privateAssets": true
-      }
-
-      _.assign(options.project, project);
 
 
-      res.render("editor/launch.html", {config: (options)})
 
+        
+        getProject(scenes.project_id)
     });
 
+    
+    let getProject = function (pid) {
+        var connection = backend.connect();
+        var doc = connection.get('projects', pid);
 
-  }
+        doc.fetch(function (err) {
+            if (err) throw err;
 
+
+            var project = {
+              id: doc.id,
+              name: doc.name,
+              description: doc.description,
+              primaryScene: scene_id,
+              "private": true,
+              "privateAssets": true
+            }
+           options.project= _.assign(options.project, project); 
+           res.render("editor/launch.html", {config: (options)})
+
+            
+
+
+        });
+
+        
+
+    }
+
+ 
 
 
 };

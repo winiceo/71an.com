@@ -1,0 +1,46 @@
+{
+  "data": {
+    "data": {
+      "scope": {
+        "type": "project",
+        "id": 449632
+      },
+      "user_id": 12,
+      "source_asset_id": null,
+      "source": false,
+      "tags": [],
+      "name": "event-emitter.js",
+      "revision": 1,
+      "preload": true,
+      "meta": null,
+      "data": {
+        "scripts": {
+          "eventEmitter": {
+            "attributesOrder": [],
+            "attributes": {}
+          }
+        },
+        "loading": false
+      },
+      "type": "script",
+      "file": {
+        "filename": "event-emitter.js",
+        "size": 8192,
+        "hash": "24d630c4fdb890c60bfb9ce8fb7236cd"
+      },
+      "region": "eu-west-1",
+      "path": [],
+      "task": null
+    },
+    "type": "http://sharejs.org/types/JSONv0",
+    "v": 0,
+    "docName": "6246272",
+    "m": {
+      "ctime": 1483677996293,
+      "mtime": 1483677996293
+    }
+  },
+  "a": "sub",
+  "c": "assets",
+  "d": "6246272"
+}

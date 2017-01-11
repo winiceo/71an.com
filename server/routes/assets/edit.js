@@ -75,24 +75,11 @@ module.exports = function(backend,config, req, res, next) {
 
 
 
-        //res.render("editor/code-editor.html", {config: (options)})
+        
         getProject(asset.project)
     });
 
-    //
-    // let model = backend.createModel()
-    // let $assets = model.at('assets.' + asset_id)
-    //
-    //
-    // $assets.subscribe(function (err) {
-    //     if (err) return next(err);
-    //     var assets = $assets.get();
-    //     console.log(assets)
-    //     _.assign(options.asset, assets);
-    //
-    //     getProject(assets.project)
-    //
-    // });
+    
     let getProject = function (pid) {
         var connection = backend.connect();
         var doc = connection.get('projects', pid);

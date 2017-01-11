@@ -1,7 +1,7 @@
 module.exports = {
   entry: './client.js',
   output: {
-    path: './build',
-    filename: 'bundle.js'
+    path: '../public/static/js/',
+    filename: 'codemirror.js'
   }
 };

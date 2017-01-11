@@ -44,85 +44,43 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var sharedb = __webpack_require__(1);
-	var otText = __webpack_require__(16);
-	var CodeMirror = __webpack_require__(19);
-	var ShareDBCodeMirror = __webpack_require__(20);
-
-	sharedb.types.map['json0'].registerSubtype(otText.type);
-
-	var editorElem = document.getElementById('editor');
-	var editor = CodeMirror.fromTextArea(editorElem, {
-	  mode: "text/plain"
-	});
-
-	var socket = new WebSocket("ws://localhost:3100");
-	var shareConnection = new sharedb.Connection(socket);
-
-	var doc = shareConnection.get('users', 'jane');
-
-	ShareDBCodeMirror.attachDocToCodeMirror(doc, editor, {
-	  key: 'content',
-	  verbose: true
-	});
-
-	document.getElementById('monkey').onclick = function() {
-	  setInterval(monkeyType, 50);
-	};
-
-	function monkeyType() {
-	  var textLength = editor.getValue().length;
-	  var pos = Math.floor(Math.random() * textLength);
-	  var from = editor.posFromIndex(pos);
-	  var editLength = randomInt(10)
-	  if (Math.random() < 0.9) {
-	    // Add text
-	    var text = randomString(editLength);
-	    editor.replaceRange(text, editor.posFromIndex(pos));
-	  } else {
-	    var endIndex = Math.max(pos + editLength, textLength - 1);
-	    var to = editor.posFromIndex(endIndex);
-	    editor.replaceRange('', from, to);
-	  }
-	}
-
-	function randomString(len) {
-	  var chars =
-	    "0123456789\nABCDEF\nGHIJKLM\nNOPQRSTUVWXTZ\nabcde\nfghiklmnop\nqrstuvwxyz";
-	  var result = '';
-	  for (var i = 0; i < len; i++) {
-	    var rnum = randomInt(chars.length);
-	    result += chars.substring(rnum, rnum + 1);
-	  }
-	  return result;
-	}
-
-	function randomInt(max) {
-	  return Math.floor(Math.random() * max);
-	}
+	__webpack_require__(1);
+	module.exports = __webpack_require__(1);
 
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports.Connection = __webpack_require__(2);
-	exports.Doc = __webpack_require__(4);
-	exports.Error = __webpack_require__(7);
-	exports.Query = __webpack_require__(14);
-	exports.types = __webpack_require__(9);
+	/* WEBPACK VAR INJECTION */(function(global) {global.sharedb = __webpack_require__(2);
+	global.otText = __webpack_require__(17);
+	global.CodeMirror = __webpack_require__(20);
+	sharedb.types.map['json0'].registerSubtype(otText.type);
+	 
 
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var Doc = __webpack_require__(4);
-	var Query = __webpack_require__(14);
-	var emitter = __webpack_require__(5);
-	var ShareDBError = __webpack_require__(7);
-	var types = __webpack_require__(9);
-	var util = __webpack_require__(15);
+	exports.Connection = __webpack_require__(3);
+	exports.Doc = __webpack_require__(5);
+	exports.Error = __webpack_require__(8);
+	exports.Query = __webpack_require__(15);
+	exports.types = __webpack_require__(10);
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {var Doc = __webpack_require__(5);
+	var Query = __webpack_require__(15);
+	var emitter = __webpack_require__(6);
+	var ShareDBError = __webpack_require__(8);
+	var types = __webpack_require__(10);
+	var util = __webpack_require__(16);
 
 	/**
 	 * Handles communication with the sharejs server and provides queries and
@@ -696,10 +654,10 @@
 	  }
 	};
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -796,12 +754,12 @@
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var emitter = __webpack_require__(5);
-	var ShareDBError = __webpack_require__(7);
-	var types = __webpack_require__(9);
+	/* WEBPACK VAR INJECTION */(function(process) {var emitter = __webpack_require__(6);
+	var ShareDBError = __webpack_require__(8);
+	var types = __webpack_require__(10);
 
 	/**
 	 * A Doc is a client's view on a sharejs document.
@@ -1710,13 +1668,13 @@
 	  return called;
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventEmitter = __webpack_require__(6).EventEmitter;
+	var EventEmitter = __webpack_require__(7).EventEmitter;
 
 	exports.EventEmitter = EventEmitter;
 	exports.mixin = mixin;
@@ -1729,7 +1687,7 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -1791,8 +1749,12 @@
 	      er = arguments[1];
 	      if (er instanceof Error) {
 	        throw er; // Unhandled 'error' event
+	      } else {
+	        // At least give some kind of context to the user
+	        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+	        err.context = er;
+	        throw err;
 	      }
-	      throw TypeError('Uncaught, unspecified "error" event.');
 	    }
 	  }
 
@@ -2033,10 +1995,10 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var makeError = __webpack_require__(8);
+	var makeError = __webpack_require__(9);
 
 	function ShareDBError(code, message) {
 	  ShareDBError.super.call(this, message);
@@ -2049,7 +2011,7 @@
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	// ISC @ Julien Fontanet
@@ -2197,11 +2159,11 @@
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	exports.defaultType = __webpack_require__(10).type;
+	exports.defaultType = __webpack_require__(11).type;
 
 	exports.map = {};
 
@@ -2214,7 +2176,7 @@
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Only the JSON type is exported, because the text type is deprecated
@@ -2222,12 +2184,12 @@
 	// into a separate module that json0 can depend on).
 
 	module.exports = {
-	  type: __webpack_require__(11)
+	  type: __webpack_require__(12)
 	};
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -2885,12 +2847,12 @@
 	  return dest;
 	};
 
-	__webpack_require__(12)(json, json.transformComponent, json.checkValidOp, json.append);
+	__webpack_require__(13)(json, json.transformComponent, json.checkValidOp, json.append);
 
 	/**
 	 * Register a subtype for string operations, using the text0 type.
 	 */
-	var text = __webpack_require__(13);
+	var text = __webpack_require__(14);
 
 	json.registerSubtype(text);
 	module.exports = json;
@@ -2898,7 +2860,7 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	// These methods let you build a transform function from a transformComponent
@@ -2982,7 +2944,7 @@
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// DEPRECATED!
@@ -3240,14 +3202,14 @@
 	  return op;
 	};
 
-	__webpack_require__(12)(text, transformComponent, checkValidOp, append);
+	__webpack_require__(13)(text, transformComponent, checkValidOp, append);
 
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {var emitter = __webpack_require__(5);
+	/* WEBPACK VAR INJECTION */(function(process) {var emitter = __webpack_require__(6);
 
 	// Queries are live requests to the database for particular sets of fields.
 	//
@@ -3447,10 +3409,10 @@
 	  this.emit('extra', extra);
 	};
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	
@@ -3464,11 +3426,11 @@
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var type = __webpack_require__(17);
-	type.api = __webpack_require__(18);
+	var type = __webpack_require__(18);
+	type.api = __webpack_require__(19);
 
 	module.exports = {
 	  type: type
@@ -3476,7 +3438,7 @@
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	/* Text OT!
@@ -3529,13 +3491,15 @@
 	  if (!isArray(op)) throw Error('Op must be an array of components');
 
 	  var last = null;
+
 	  for (var i = 0; i < op.length; i++) {
 	    var c = op[i];
+	    
 	    switch (typeof c) {
 	      case 'object':
-	        // The only valid objects are {d:X} for +ive values of X.
-	        if (!(typeof c.d === 'number' && c.d > 0)) throw Error('Object components must be deletes of size > 0');
-	        break;
+	        // // The only valid objects are {d:X} for +ive values of X.
+	        // if (!(typeof c.d === 'number' && c.d > 0)) throw Error('Object components must be deletes of size > 0');
+	         break;
 	      case 'string':
 	        // Strings are inserts.
 	        if (!(c.length > 0)) throw Error('Inserts cannot be empty');
@@ -3899,7 +3863,7 @@
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 	// Text document API for the 'text' type. This implements some standard API
@@ -3945,6 +3909,7 @@
 	    //onRemove: function(pos, removedLength) {},
 
 	    _onOp: function(op) {
+	      alert(op)
 	      var pos = 0;
 	      var spos = 0;
 	      for (var i = 0; i < op.length; i++) {
@@ -3970,7 +3935,7 @@
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -13084,315 +13049,6 @@
 	return CodeMirror;
 
 	})));
-
-/***/ },
-/* 20 */
-/***/ function(module, exports) {
-
-	var CODE_MIRROR_OP_SOURCE = 'CodeMirror';
-
-	/**
-	 * @constructor
-	 * @param {CodeMirror} codeMirror - a CodeMirror editor instance
-	 * @param {Object} options - required. Options object with the following keys:
-	 *    - onOp(op, source): required. a function to call when a text OT op is
-	 *      produced by the editor. Note the second argument, `source`, which **must**
-	 *      be passed through to the ShareDB doc.
-	 *    - onStart(): optional. will be called when ShareDBCodeMirror starts listening
-	 *      (i.e., when `.start()` or `.setValue()` is called)
-	 *    - onStop(): optional. will be called when ShareDBCodeMirror stops listening
-	 *      (i.e., when `.stop()` is called)
-	 *    - verbose: optional. If provided and true, debug messages will be printed
-	 *      to the console.
-	 */
-	function ShareDBCodeMirror(codeMirror, options) {
-	  this.codeMirror = codeMirror;
-	  this.verbose = Boolean(options.verbose);
-	  this.onOp = options.onOp;
-	  this.onStart = options.onStart || function() {};
-	  this.onStop = options.onStop || function() {};
-
-	  this._started = false;
-	  this._suppressChange = false;
-	  this._changeListener = this._handleChange.bind(this);
-	}
-	module.exports = ShareDBCodeMirror;
-
-	/**
-	 * Attaches a ShareDB doc to a CodeMirror instance. You can also construct a
-	 * ShareDBCodeMirror instance directly if you'd like to wire things up
-	 * explicitly and have an abstraction layer between the two.
-	 *
-	 * @param {sharedb.Doc} shareDoc
-	 * @param {CodeMirror} codeMirror
-	 * @param {Object} options - configuration options:
-	 *    - key: string; required. The key in the ShareDB doc at which to
-	 *      store the CodeMirror value. Deeply nested paths are currently not
-	 *      supported.
-	 *    - verbose: optional. If provided and true, debug messages will be printed
-	 *      to the console.
-	 * @param {function(Object)=} callback - optional. will be called when everything
-	 *    is hooked up. The first argument will be the error that occurred, if any.
-	 * @return {ShareDBCodeMirror} the created ShareDBCodeMirror object
-	 */
-	ShareDBCodeMirror.attachDocToCodeMirror = function(shareDoc, codeMirror, options, callback) {
-	  var key = options.key;
-	  var verbose = Boolean(options.verbose);
-
-	  var shareDBCodeMirror = new ShareDBCodeMirror(codeMirror, {
-	    verbose: verbose,
-	    onStart: function() {
-	      shareDoc.on('op', shareDBOpListener);
-	    },
-	    onStop: function() {
-	      shareDoc.removeListener('op', shareDBOpListener);
-	    },
-	    onOp: function(op, source) {
-	      var docOp = [{p: [key], t: 'text', o: op}];
-
-	      if (verbose) {
-	        console.log('ShareDBCodeMirror: submitting op to doc:', docOp);
-	      }
-
-	      shareDoc.submitOp(docOp, source);
-	      shareDBCodeMirror.assertValue(shareDoc.data[key]);
-	    }
-	  });
-
-	  function shareDBOpListener(op, source) {
-	    for (var i = 0; i < op.length; i++) {
-	      var opPart = op[i];
-
-	      if (opPart.p && opPart.p.length === 1 && opPart.p[0] === key && opPart.t === 'text') {
-	        shareDBCodeMirror.applyOp(opPart.o, source);
-
-	      } else if (verbose) {
-	        console.log('ShareDBCodeMirror: ignoring op because of path or type:', opPart);
-	      }
-	    }
-
-	    shareDBCodeMirror.assertValue(shareDoc.data[key]);
-	  }
-
-	  shareDoc.subscribe(function(err) {
-	    if (err) {
-	      if (callback) {
-	        callback(err);
-	        return;
-	      } else {
-	        throw err;
-	      }
-	    }
-
-	    if (!shareDoc.type) {
-	      if (verbose) {
-	        console.log('ShareDBCodeMirror: creating as text');
-	      }
-	      var newDoc = {};
-	      newDoc[key] = '';
-	      shareDoc.create(newDoc);
-	    }
-
-	    if (verbose) {
-	      console.log('ShareDBCodeMirror: Subscribed to doc');
-	    }
-
-	    shareDBCodeMirror.setValue(shareDoc.data[key] || '');
-
-	    if (callback) {
-	      callback(null);
-	    }
-	  });
-
-	  return shareDBCodeMirror;
-	};
-
-	/**
-	 * Starts listening for changes from the CodeMirror instance. Calling `setValue`
-	 * will also call this, if necessary.
-	 */
-	ShareDBCodeMirror.prototype.start = function() {
-	  if (this._started) {
-	    return;
-	  }
-	  this.codeMirror.on('change', this._changeListener);
-	  this._started = true;
-	  this.onStart();
-	};
-
-	/**
-	 * Replaces the contents of the CodeMirror instance with the supplied text and
-	 * starts listening for changes.
-	 */
-	ShareDBCodeMirror.prototype.setValue = function(text) {
-	  if (!this._started) {
-	    this.start();
-	  }
-	  this._suppressChange = true;
-	  this.codeMirror.setValue(text);
-	  this._suppressChange = false;
-	};
-
-	/**
-	 * Convenience - returns the text in the CodeMirror instance.
-	 */
-	ShareDBCodeMirror.prototype.getValue = function() {
-	  return this.codeMirror.getValue();
-	};
-
-	/**
-	 * Asserts that the value in the CodeMirror instance matches the passed-in value.
-	 * If it does not, an error is logged and the value in CodeMirror is reset. This
-	 * should be called periodically with the value from the ShareDB doc to ensure
-	 * the value in CodeMirror hasn't diverged.
-	 *
-	 * @return {boolean} true if the passed-in value matches the value in the
-	 *    CodeMirror instance, false otherwise.
-	 */
-	ShareDBCodeMirror.prototype.assertValue = function(expectedValue) {
-	  var editorValue = this.codeMirror.getValue();
-
-	  if (expectedValue !== editorValue) {
-	    console.error(
-	      "Value in CodeMirror doesn't match expected value:\n\n",
-	      "Expected Value:\n", expectedValue,
-	      "\n\nEditor Value:\n", editorValue);
-
-	    this._suppressChange = true;
-	    this.codeMirror.setValue(expectedValue);
-	    this._suppressChange = false;
-
-	    return false;
-	  }
-
-	  return true;
-	};
-
-	/**
-	 * Applies the changes represented by the given text OT op. The op may be
-	 * ignored if it appears to be an echo of the most recently submitted local op.
-	 * In order to do this properly, the second argument, `source`, **must** be passed
-	 * in. This will be the second argument to an "op" listener on a ShareDB doc.
-	 */
-	ShareDBCodeMirror.prototype.applyOp = function(op, source) {
-	  if (source === undefined) {
-	    throw new Error("The 'source' argument must be provided");
-	  }
-
-	  if (!Array.isArray(op)) {
-	    throw new Error("Unexpected non-Array op for text document");
-	  }
-
-	  if (!this._started) {
-	    if (this.verbose) {
-	      console.log('ShareDBCodeMirror: op received while not running, ignored', op);
-	    }
-	    return;
-	  }
-
-	  if (source === CODE_MIRROR_OP_SOURCE) {
-	    if (this.verbose) {
-	      console.log('ShareDBCodeMirror: skipping local op', op);
-	    }
-	    return;
-	  }
-
-	  if (this.verbose) {
-	    console.log('ShareDBCodeMirror: applying op', op);
-	  }
-
-	  this._suppressChange = true;
-	  this._applyChangesFromOp(op);
-	  this._suppressChange = false;
-	};
-
-	/**
-	 * Stops listening for changes from the CodeMirror instance.
-	 */
-	ShareDBCodeMirror.prototype.stop = function() {
-	  if (!this._started) {
-	    return;
-	  }
-	  this.codeMirror.off('change', this._changeListener);
-	  this._started = false;
-	  this.onStop();
-	};
-
-	ShareDBCodeMirror.prototype._applyChangesFromOp = function(op) {
-	  var textIndex = 0;
-	  var codeMirror = this.codeMirror;
-
-	  op.forEach(function(part) {
-	    switch (typeof part) {
-	      case 'number': // skip n chars
-	        textIndex += part;
-	        break;
-	      case 'string': // "chars" - insert "chars"
-	        codeMirror.replaceRange(part, codeMirror.posFromIndex(textIndex));
-	        textIndex += part.length;
-	        break;
-	      case 'object': // {d: num} - delete `num` chars
-	        var from = codeMirror.posFromIndex(textIndex);
-	        var to = codeMirror.posFromIndex(textIndex + part.d);
-	        codeMirror.replaceRange('', from, to);
-	        break;
-	    }
-	  });
-	};
-
-	ShareDBCodeMirror.prototype._handleChange = function(codeMirror, change) {
-	  if (this._suppressChange) {
-	    return;
-	  }
-
-	  var op = this._createOpFromChange(change);
-
-	  if (this.verbose) {
-	    console.log('ShareDBCodeMirror: produced op', op);
-	  }
-
-	  this.onOp(op, CODE_MIRROR_OP_SOURCE);
-	};
-
-	ShareDBCodeMirror.prototype._createOpFromChange = function(change) {
-	  var codeMirror = this.codeMirror;
-	  var op = [];
-	  var textIndex = 0;
-	  var startLine = change.from.line;
-
-	  for (var i = 0; i < startLine; i++) {
-	    textIndex += codeMirror.lineInfo(i).text.length + 1; // + 1 for '\n'
-	  }
-
-	  textIndex += change.from.ch;
-
-	  if (textIndex > 0) {
-	    op.push(textIndex); // skip textIndex chars
-	  }
-
-	  if (change.to.line !== change.from.line || change.to.ch !== change.from.ch) {
-	    var delLen = 0;
-	    var numLinesRemoved = change.removed.length;
-
-	    for (var i = 0; i < numLinesRemoved; i++) {
-	      delLen += change.removed[i].length + 1; // +1 for '\n'
-	    }
-
-	    delLen -= 1; // last '\n' shouldn't be included
-
-	    op.push({d: delLen}) // delete delLen chars
-	  }
-
-	  if (change.text) {
-	    var text = change.text.join('\n');
-	    if (text) {
-	      op.push(text); // insert text
-	    }
-	  }
-
-	  return op;
-	};
-
 
 /***/ }
 /******/ ]);

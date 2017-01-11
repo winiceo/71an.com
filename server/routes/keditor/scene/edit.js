@@ -62,7 +62,7 @@ module.exports = function(backend,config, req, res, next) {
       "home": "http://192.168.1.103:3100",
       "realtime": {"http": "ws://192.168.1.103:3200"},
       "messenger": {"http": "https://msg.playcanvas.com/", "ws": "https://msg.playcanvas.com/messages"},
-      "engine": "http://192.168.1.103:4444/playcanvas-stable.js",
+      "engine": "http://192.168.1.103:3100/playcanvas-stable.js",
       "howdoi": "https://s3-eu-west-1.amazonaws.com/code.playcanvas.com/editor_howdoi.json",
       "static": "https://s3-eu-west-1.amazonaws.com/static.playcanvas.com",
       "images": "https://s3-eu-west-1.amazonaws.com/images.playcanvas.com"

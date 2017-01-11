@@ -27132,7 +27132,7 @@ editor.once('load', function() {
 
             // engine material data
             var data = {
-                id: parseInt(assetJson.id, 10),
+                id: assetJson.id,
                 name: assetJson.name,
                 file: assetJson.file ? {
                     filename: assetJson.file.filename,
@@ -27149,7 +27149,7 @@ editor.once('load', function() {
             // assetRegistry.createAndAddAsset(assetJson.id, data);
 
             var newAsset = new pc.Asset(data.name, data.type, data.file, data.data);
-            newAsset.id = parseInt(assetJson.id, 10);
+            newAsset.id =  assetJson.id;
             assetRegistry.add(newAsset);
 
             var timeout;

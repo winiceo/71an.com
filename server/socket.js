@@ -6,15 +6,18 @@ var path = require('path');
 var Duplex = require('stream').Duplex;
 var inherits = require('util').inherits;
 var express = require('express');
-var ShareDB = require('sharedb');
+var ShareDB = require('../src/server/vendor/sharedb');
 var WebSocketServer = require('ws').Server;
 var otText = require('ot-text');
+var richText = require('rich-text');
 
-
+const log = require("sharedb-logger")
+ShareDB.types.register(otText.type);
 //
-ShareDB.types.map['json0'].registerSubtype(otText.type);
+//ShareDB.types.map['json0'].registerSubtype(otText.type);
+// ShareDB.types.map['json0'].registerSubtype(richText.type);
 //
- console.log(ShareDB.types.map)
+ //console.log(ShareDB.types.map)
 
 const db = require('sharedb-mongo')('mongodb://71an.com:2706/playcanvas');
 
@@ -27,7 +30,7 @@ module.exports = (cb) => {
     var  shareDB = new ShareDB({
         db
     });
-
+    log(shareDB)
     var app = express();
     app.use(express.static(__dirname));
     app.use(express.static(__dirname + '/../node_modules/codemirror/lib'));
@@ -87,6 +90,27 @@ module.exports = (cb) => {
                     }
 
                     if (/^project/.test(message)) {
+                        return //clientSend('auth{"id":10695}');
+                    }
+                    if (/^doc:save/.test(message)) {
+                      var reg=new RegExp('(doc:save:")(.+)(")',"gmi");
+
+                        var id=message.replace(reg,"$2")
+                        var connection = shareDB.connect();
+                        var doc = connection.get('assets', id);
+                        doc.fetch(function(err) {
+                          if (err) throw err;
+                            console.error(doc)
+                          // if (doc.type === null) {
+                          //   doc.create(user);
+
+                          //   console.log(doc)
+                          //   return;
+                          // }
+                          return clientSend(JSON.stringify(doc.data))
+                        });
+
+
                         return //clientSend('auth{"id":10695}');
                     }
                 }

@@ -39,7 +39,7 @@ thimble({}, function (event, options) {
   })
 
   event.on("websocket",function(server,backend) {
-    //require('./server/socket')(backend)
+     require('./server/socket')(backend)
 
   })
 
