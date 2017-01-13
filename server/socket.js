@@ -17,17 +17,17 @@ ShareDB.types.register(otText.type);
 //ShareDB.types.map['json0'].registerSubtype(otText.type);
 // ShareDB.types.map['json0'].registerSubtype(richText.type);
 //
- //console.log(ShareDB.types.map)
+//console.log(ShareDB.types.map)
 
 const db = require('sharedb-mongo')('mongodb://71an.com:2706/playcanvas');
 
-module.exports = (cb) => {
+module.exports = (backend, event) => {
     //ShareDB.types.map['json0'].registerSubtype(otText.type);
 
-   // var shareDB = ShareDB();
+    // var shareDB = ShareDB();
 
 
-    var  shareDB = new ShareDB({
+    var shareDB = new ShareDB({
         db
     });
     log(shareDB)
@@ -61,14 +61,15 @@ module.exports = (cb) => {
                 socket.send(message);
             }
         }
-        socket.on('message', function(message) {
+
+        socket.on('message', function (message) {
 
 
             try {
                 if (/^{/.test(message)) {
                     var data = JSON.parse(message);
                     stream.push(data);
-                }else{
+                } else {
                     if (message === 'ping') {
                         clientSend('pong');
                         //log('server -> client\n', 'pong\n');
@@ -77,7 +78,7 @@ module.exports = (cb) => {
                     //console.log("==============")
 
                     //console.log(msg)
-                    if (message==="auth") {
+                    if (message === "auth") {
                         return true;
                     }
 
@@ -89,28 +90,85 @@ module.exports = (cb) => {
                         return //clientSend('auth{"id":10695}');
                     }
 
-                    if (/^project/.test(message)) {
+
+
+                    if (/^fs/.test(message)) {
+                        var reg = new RegExp('(fs)(.+)', "gmi");
+
+                        var a = message.replace(reg, "$2");
+                        // console.log(a)
+                        var obj = JSON.parse(a)
+                        console.log(obj)
+                        require('./common/assets_fs')(shareDB, obj, event)
+
                         return //clientSend('auth{"id":10695}');
                     }
-                    if (/^doc:save/.test(message)) {
-                      var reg=new RegExp('(doc:save:")(.+)(")',"gmi");
 
-                        var id=message.replace(reg,"$2")
+                    if (/^doc:save/.test(message)) {
+                        var reg = new RegExp('(doc:save:")(.+)(")', "gmi");
+
+                        var id = message.replace(reg, "$2")
                         var connection = shareDB.connect();
                         var doc = connection.get('assets', id);
-                        doc.fetch(function(err) {
-                          if (err) throw err;
+                        doc.fetch(function (err) {
+                            if (err) throw err;
                             console.error(doc)
-                          // if (doc.type === null) {
-                          //   doc.create(user);
+                            // if (doc.type === null) {
+                            //   doc.create(user);
 
-                          //   console.log(doc)
-                          //   return;
-                          // }
-                          return clientSend(JSON.stringify(doc.data))
+                            //   console.log(doc)
+                            //   return;
+                            // }
+                            return clientSend(JSON.stringify(doc.data))
                         });
 
 
+                        return //clientSend('auth{"id":10695}');
+                    }
+                    console.log(message)
+                    //{"id":449755,"path":"settings.scripts","value":[6316184,6316185,6316189,6316292,6316293]}
+                    if (/^project:save/.test(message)) {
+                        console.log("****************")
+                        console.log(message)
+
+                        var reg = new RegExp('(project:save)(.+)', "gmi");
+
+                        var obj = JSON.parse(message.replace(reg, "$2"))
+
+
+                        console.log(obj)
+                       
+                        var connection = shareDB.connect();
+                        var project = connection.get('projects', ""+obj.id);
+                        project.fetch(function (err) {
+                            if (err) throw err;
+
+                            project.submitOp({p: ['settings','scripts'], oi:  (obj.value)});
+
+                            var oss = {
+                                "name": "project.update",
+                                "target": {
+                                    "type": "project",
+                                    "id": obj.id
+                                },
+                                "env": [
+                                    "dashboard",
+                                    "designer"
+                                ],
+                                "data": {
+                                    "settings.scripts": obj.value
+                                }
+                            }
+                            event.emit("oss",oss)
+
+                        });
+
+
+                        return //clientSend('auth{"id":10695}');
+                    }
+
+
+                    if (/^project{/.test(message)) {
                         return //clientSend('auth{"id":10695}');
                     }
                 }

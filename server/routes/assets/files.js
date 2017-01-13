@@ -5,17 +5,17 @@ module.exports = function(backend,config, req, res, next) {
 
     var connection = backend.connect();
 
-    var doc = connection.get('assets', req.query.id);
+    var doc = connection.get('documents', req.query.id);
     let callback = function () {
         "use strict";
-        console.error(doc.data.data)
-        res.send((doc.data.data))
+
+        res.send((doc.data))
 
     }
     doc.fetch(function (err) {
         if (err) throw err;
         if (doc.type === null) {
-            doc.create({data: ""}, callback);
+            doc.create({}, callback);
             return;
         }
         callback();

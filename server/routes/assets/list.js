@@ -14,10 +14,11 @@ module.exports = function(backend, config, req, res, next) {
   var connection = backend.connect()
 
   var doc = connection.createSubscribeQuery('assets', {
-    "data.project": req.params.d
+    "project": req.params.d
   }, {}, function(err) {
 
     var tmp = []
+
     _.each(doc.results, function(b) {
       tmp.push({
         id: b.id

@@ -9,3 +9,9 @@ var url="http://www.qidian.com/BookReader/1017141,20361055.aspx";
 
 var rep=url.replace(reg,"$1ShowBook.aspx?bookId=$2&chapterId=$3");
 console.log(rep)
+
+
+var uuid = require('node-uuid');  
+console.log(uuid.v1())  
+var a=Date.now()
+console.log( parseInt(6309171,10) ,a) 

@@ -16,7 +16,8 @@ function Model(options) {
 }
 
 Model.prototype.id = function() {
-  return uuid.v4();
+  return ""+parseInt(Date.now());
+  //return uuid.v4();
 };
 
 Model.prototype._child = function() {

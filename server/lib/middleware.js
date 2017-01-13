@@ -12,10 +12,12 @@ let env = require("./environment");
 let HttpError = require("./http-error");
 
 let upload = multer({
-  dest1: require("os").tmpdir(),
+  //dest1: require("os").tmpdir(),
   dest: path.join(__dirname, 'public/uploads/'),
   limits: { fileSize: env.get("MAX_FILE_SIZE_BYTES") }
 });
+
+
 const publishHost = env.get("PUBLISH_HOSTNAME");
 
 module.exports = function middlewareConstructor() {

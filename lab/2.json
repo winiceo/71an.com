@@ -1,1 +1,70 @@
-["code_editor/sharedb-codemirror.js","codemirror/lib/codemirror.js","codemirror/mode/javascript/javascript.js","codemirror/mode/css/css.js","codemirror/mode/xml/xml.js","codemirror/mode/htmlmixed/htmlmixed.js","codemirror/mode/glsl/glsl.js","codemirror/addon/dialog/dialog.js","codemirror/addon/hint/show-hint.js","codemirror/addon/tern/tern.js","codemirror/addon/tern/worker.js","codemirror/addon/search/search.js","codemirror/addon/search/searchcursor.js","codemirror/addon/search/match-highlighter.js","codemirror/addon/edit/closebrackets.js","codemirror/addon/edit/matchbrackets.js","codemirror/addon/comment/comment.js","codemirror/addon/comment/continuecomment.js","codemirror/addon/selection/active-line.js","codemirror/addon/lint/jshint.js","codemirror/addon/lint/lint.js","codemirror/addon/lint/javascript-lint.js","codemirror/addon/tern/lib/acorn.js","codemirror/addon/tern/lib/acorn_loose.js","codemirror/addon/tern/lib/walk.js","codemirror/addon/tern/lib/polyfill.js","codemirror/addon/tern/lib/signal.js","codemirror/addon/tern/lib/tern.js","codemirror/addon/tern/lib/def.js","codemirror/addon/tern/lib/comment.js","codemirror/addon/tern/lib/infer.js","codemirror/addon/tern/lib/doc_comment.js","codemirror/addon/fold/foldcode.js","codemirror/addon/fold/foldgutter.js","codemirror/addon/fold/foldgutter.js","codemirror/addon/fold/brace-fold.js","codemirror/addon/fold/comment-fold.js","codemirror/addon/scroll/scrollpastend.js","utils.js","ajax.js","array.js","observer.js","observer-list.js","observer-sync.js","code_editor/app.js","editor/messenger.js","editor/permissions.js","code_editor/tern-defs/tern-ecma5.js","code_editor/tern-defs/tern-browser.js","code_editor/tern-defs/tern-pc.js","code_editor/editor-sync-realtime.js","code_editor/editor-sync.js","code_editor/editor-codemirror.js","code_editor/editor-codemirror-realtime.js","code_editor/editor-toolbar.js","code_editor/editor-whoisonline.js"]
+{
+  "_id": "1484254280972",
+  "primary_pack": 488291,
+  "new_owner": null,
+  "private": false,
+  "engine_version": "stable",
+  "last_post_id": null,
+  "owner": "leven",
+  "watched": 0,
+  "plays": 0,
+  "private_settings": {
+
+  },
+  "access_level": "admin",
+  "size": {
+    "code": 0,
+    "total": 0,
+    "apps": 0,
+    "assets": 0
+  },
+  "owner_id": 10695,
+  "website": "",
+  "fork_from": null,
+  "hash": "cw4SvI7U",
+  "description": "asdfasdf",
+  "views": 0,
+  "private_source_assets": false,
+  "last_post_date": null,
+  "tags": [
+
+  ],
+  "permissions": {
+    "admin": [
+      "leven"
+    ],
+    "write": [
+
+    ],
+    "read": [
+
+    ]
+  },
+  "locked": false,
+  "name": "aafasdfasdf",
+  "settings": {
+    "use_legacy_scripts": false,
+    "vr": false
+  },
+  "created": "2017-01-06T10:03:19.393000",
+  "repositories": {
+    "current": "directory",
+    "directory": {
+      "state": {
+        "status": "ready"
+      },
+      "modified": "2017-01-06T10:03:19.393000",
+      "created": "2017-01-06T10:03:19.393000"
+    }
+  },
+  "modified": "2017-01-06T10:03:19.393000",
+  "flags": {
+
+  },
+  "activity": {
+    "level": 0
+  },
+  "primary_app": null,
+  "starred": 0
+
+}

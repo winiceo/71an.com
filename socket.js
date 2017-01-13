@@ -31,97 +31,53 @@ const db = require('sharedb-mongo')('mongodb://71an.com:2706/playcanvas');
         db
     });
 log(shareDB)
-    var app = express();
-    app.use(express.static(__dirname));
-    app.use(express.static(__dirname + '/../node_modules/codemirror/lib'));
+// var id=1484255502700
+//
+//
+// var connection = shareDB.connect();
+// var doc = connection.get('projects', ""+id);
+// doc.fetch(function (err) {
+//     if (err) throw err;
+//     console.error(doc.data)
+//     doc.submitOp({p: ['settings','scripts'], oi:  [2,3,4]},function(){
+//         "use strict";
+//         console.log(doc.data)
+//     });
+//
+// });
 
-    var server = http.createServer(app);
-    server.listen(3200, function (err) {
-        if (err) {
-            throw err;
+var message='project:save{"id":"1484256341844","path":"settings.scripts","value":[1484256359790,1484256426099]}';
+var reg = new RegExp('(project:save)(.+)', "gmi");
+
+var obj =  message.replace(reg, "$2")
+
+
+var obj = JSON.parse(message.replace(reg, "$2"))
+
+
+console.log(obj)
+
+var connection = shareDB.connect();
+var project = connection.get('projects', ""+obj.id);
+project.fetch(function (err) {
+    if (err) throw err;
+
+    project.submitOp({p: obj.path.split("."), oi:  (obj.value)});
+
+    var oss = {
+        "name": "project.update",
+        "target": {
+            "type": "project",
+            "id": obj.id
+        },
+        "env": [
+            "dashboard",
+            "designer"
+        ],
+        "data": {
+            "settings.scripts": obj.value
         }
-        console.log('Listening on http://%s:%s', server.address().address, server.address().port);
-    });
-
-    var webSocketServer = new WebSocketServer({server: server});
-
-    webSocketServer.on('connection', function (socket) {
-        var stream = new WebsocketJSONOnWriteStream(socket);
-        shareDB.listen(stream);
-    });
-
-    function WebsocketJSONOnWriteStream(socket) {
-        Duplex.call(this, {objectMode: true});
-
-        this.socket = socket;
-        var stream = this;
-
-        function clientSend(message) {
-            if (socket.readyState === socket.OPEN) {
-                socket.send(message);
-            }
-        }
-        socket.on('message', function(message) {
-
-
-            try {
-                if (/^{/.test(message)) {
-                    var data = JSON.parse(message);
-                    stream.push(data);
-                }else{
-                    if (message === 'ping') {
-                        clientSend('pong');
-                        //log('server -> client\n', 'pong\n');
-                        return;
-                    }
-                    //console.log("==============")
-
-                    //console.log(msg)
-                    if (message==="auth") {
-                        return true;
-                    }
-
-                    if (/^auth/.test(message)) {
-                        return clientSend('auth{"id":10695}');
-                    }
-
-                    if (/^selection/.test(message)) {
-                        return //clientSend('auth{"id":10695}');
-                    }
-
-                    if (/^project/.test(message)) {
-                        return //clientSend('auth{"id":10695}');
-                    }
-                }
-
-            } catch (err) {
-                stream.emit('error', err);
-                return;
-            }
-
-        });
-
-        socket.on("close", function () {
-            stream.push(null);
-        });
-
-        this.on("error", function (msg) {
-            console.warn('WebsocketJSONOnWriteStream error', msg);
-            socket.close();
-        });
-
-        this.on("end", function () {
-            socket.close();
-        });
     }
 
-    inherits(WebsocketJSONOnWriteStream, Duplex);
 
-    WebsocketJSONOnWriteStream.prototype._write = function (value, encoding, next) {
-        this.socket.send(JSON.stringify(value));
-        next();
-    };
-
-    WebsocketJSONOnWriteStream.prototype._read = function () {
-    };
-//}
+});

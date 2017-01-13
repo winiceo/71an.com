@@ -4735,6 +4735,8 @@ editor.once('load', function() {
 
         // add assets to asset registry
         editor.on('assets:add', function (asset) {
+
+            console.error(asset)
             // do only for target assets
             if (asset.get('source'))
                 return;
@@ -5042,17 +5044,21 @@ editor.once('load', function() {
             // notify of asset load
             assetData.id = id;
 
+
+
             if (assetData.file) {
                 assetData.file.url = getFileUrl(assetData.path, assetData.id, assetData.revision, assetData.file.filename);
-
+ 
                 if (assetData.file.variants) {
                     for(var key in assetData.file.variants) {
                         assetData.file.variants[key].url = getFileUrl(assetData.path, assetData.id, assetData.revision, assetData.file.variants[key].filename);
                     }
                 }
             }
-
+             
             var asset = editor.call('assets:get', id);
+
+           
             // asset can exist if we are reconnecting to c3
             var assetExists = !!asset;
 
@@ -5147,6 +5153,8 @@ editor.once('load', function() {
 
     // load all assets
     editor.on('realtime:authenticated', function() {
+
+         
         Ajax({
             url: '{{url.api}}/projects/{{project.id}}/assets?view=launcher',
             auth: true

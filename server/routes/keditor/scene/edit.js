@@ -61,7 +61,7 @@ module.exports = function(backend,config, req, res, next) {
       "api": "http://192.168.1.103:3100/api",
       "home": "http://192.168.1.103:3100",
       "realtime": {"http": "ws://192.168.1.103:3200"},
-      "messenger": {"http": "https://msg.playcanvas.com/", "ws": "https://msg.playcanvas.com/messages"},
+      "messenger": {"http": "https://msg.playcanvas.com/", "ws": "http://192.168.1.103:3300/messages"},
       "engine": "http://192.168.1.103:3100/playcanvas-stable.js",
       "howdoi": "https://s3-eu-west-1.amazonaws.com/code.playcanvas.com/editor_howdoi.json",
       "static": "https://s3-eu-west-1.amazonaws.com/static.playcanvas.com",

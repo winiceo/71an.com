@@ -4,6 +4,7 @@
 
 let _=require("lodash")
 let createUserData=require("./user_data")
+let designerSettings=require("./designer_settings")
 module.exports= function(project, backend,callback) {
     "use strict";
     let model = backend.createModel()
@@ -258,10 +259,10 @@ module.exports= function(project, backend,callback) {
 
     var connection = backend.connect();
 
-    var doc = connection.get('scenes', uid);
+    var doc = connection.get('scenes', ""+uid);
     var data = {
         "project_id": project.id,
-        name:project.name,
+        name:project.data.name,
         scene: uid
     }
     doc.fetch(function (err) {
@@ -273,6 +274,7 @@ module.exports= function(project, backend,callback) {
             doc.create(_.assign(obj, data), callback(doc));
 
             createUserData(uid,backend,function(){})
+            designerSettings(uid,backend,function(){})
             return;
         }
 

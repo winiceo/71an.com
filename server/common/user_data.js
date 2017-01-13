@@ -8,21 +8,135 @@ module.exports= function(uid, backend,callback) {
 
 
     let obj = {
-        "accessed_at": "2017-01-03T08:53:18.360Z",
+        "accessed_at": "2017-01-12T13:29:20.823Z",
         "cameras": {
             "perspective": {
-                "position": [111.68462371826172, 22.362058639526367, -35.30546951293945],
-                "rotation": [-11.19999885559082, 88.7999267578125, -4.7605803388250933e-7],
-                "focus": [-5.145729064941406, -0.7760467529296875, -37.752864837646484]
+                "position": [
+                    9.199999809265137,
+                    7,
+                    9
+                ],
+                "rotation": [
+                    -25,
+                    44.999996185302734,
+                    0
+                ],
+                "focus": [
+                    -0.2167806625366211,
+                    0.7900228500366211,
+                    -0.4167804718017578
+                ]
             },
-            "top": {"position": [0, 1000, 0], "rotation": [-90, 0, 0], "focus": [0, 0, 0], "orthoHeight": 5},
-            "bottom": {"position": [0, -1000, 0], "rotation": [90, 0, 0], "focus": [0, 0, 0], "orthoHeight": 5},
-            "front": {"position": [0, 0, 1000], "rotation": [0, 0, 0], "focus": [0, 0, 0], "orthoHeight": 3.1587822596735524},
-            "back": {"position": [0, 0, -1000], "rotation": [-180, 0, -180], "focus": [0, 0, 0], "orthoHeight": 5},
-            "left": {"position": [-1000, 0, 0], "rotation": [0, -90, 0], "focus": [0, 0, 0], "orthoHeight": 5},
-            "right": {"position": [1000, 0, 0], "rotation": [0, 90, 0], "focus": [0, 0, 0], "orthoHeight": 5}
+            "top": {
+                "position": [
+                    0,
+                    1000,
+                    0
+                ],
+                "rotation": [
+                    -90,
+                    0,
+                    0
+                ],
+                "focus": [
+                    0,
+                    0,
+                    0
+                ],
+                "orthoHeight": 5
+            },
+            "bottom": {
+                "position": [
+                    0,
+                    -1000,
+                    0
+                ],
+                "rotation": [
+                    90,
+                    0,
+                    0
+                ],
+                "focus": [
+                    0,
+                    0,
+                    0
+                ],
+                "orthoHeight": 5
+            },
+            "front": {
+                "position": [
+                    0,
+                    0,
+                    1000
+                ],
+                "rotation": [
+                    0,
+                    0,
+                    0
+                ],
+                "focus": [
+                    0,
+                    0,
+                    0
+                ],
+                "orthoHeight": 5
+            },
+            "back": {
+                "position": [
+                    0,
+                    0,
+                    -1000
+                ],
+                "rotation": [
+                    -180,
+                    0,
+                    -180
+                ],
+                "focus": [
+                    0,
+                    0,
+                    0
+                ],
+                "orthoHeight": 5
+            },
+            "left": {
+                "position": [
+                    -1000,
+                    0,
+                    0
+                ],
+                "rotation": [
+                    0,
+                    -90,
+                    0
+                ],
+                "focus": [
+                    0,
+                    0,
+                    0
+                ],
+                "orthoHeight": 5
+            },
+            "right": {
+                "position": [
+                    1000,
+                    0,
+                    0
+                ],
+                "rotation": [
+                    0,
+                    90,
+                    0
+                ],
+                "focus": [
+                    0,
+                    0,
+                    0
+                ],
+                "orthoHeight": 5
+            }
         },
-        "scene": 487210,
+        "scene": 489902,
         "user": 10695
     }
 

@@ -1,0 +1,18 @@
+var Kljlkjl = pc.createScript('kljlkjl');
+
+// initialize code called once per entity
+Kljlkjl.prototype.initialize = function() {
+    
+};
+
+// update code called every frame
+Kljlkjl.prototype.update = function(dt) {
+    
+};
+
+// swap method called for script hot-reloading
+// inherit your script state here
+// Kljlkjl.prototype.swap = function(old) { };
+
+// to learn more about script anatomy, please read:
+// http://developer.playcanvas.com/en/user-manual/scripting/

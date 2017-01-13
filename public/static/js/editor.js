@@ -26997,7 +26997,6 @@ editor.once('load', function() {
 
 
 /* editor/assets/assets.js */
- 
 
 editor.once('load', function() {
     'use strict';
@@ -27065,7 +27064,7 @@ editor.once('load', function() {
             assets.move(this, pos);
             editor.emit('assets:move', asset, pos);
         });
-        
+
         // publish added asset
         editor.emit('assets:add[' + asset.get('id') + ']', asset, pos);
         editor.emit('assets:add', asset, pos);
@@ -27132,7 +27131,7 @@ editor.once('load', function() {
 
             // engine material data
             var data = {
-                id: assetJson.id,
+                id: parseInt(assetJson.id, 10),
                 name: assetJson.name,
                 file: assetJson.file ? {
                     filename: assetJson.file.filename,
@@ -27149,7 +27148,7 @@ editor.once('load', function() {
             // assetRegistry.createAndAddAsset(assetJson.id, data);
 
             var newAsset = new pc.Asset(data.name, data.type, data.file, data.data);
-            newAsset.id =  assetJson.id;
+            newAsset.id = parseInt(assetJson.id, 10);
             assetRegistry.add(newAsset);
 
             var timeout;
@@ -27235,10 +27234,7 @@ editor.once('load', function() {
 
         // ready to sync
         doc.on('load', function () {
-            var assetData = doc.data.data;
-                       
- 
-            // alert(JSON.stringify(assetData))
+            var assetData = doc.data;
             if (! assetData) {
                 console.error('Could not load asset: ' + id);
                 editor.call('status:error', 'Could not load asset: ' + id);
@@ -27398,7 +27394,6 @@ editor.once('load', function() {
 
                 return;
             }
-            //console.error(JSON.stringify(res))
 
             if (! noSelect) {
                 var asset = editor.call('assets:get', res.asset.id);
@@ -27476,7 +27471,6 @@ editor.once('load', function() {
             editor.call('material:rememberMissingFields', asset);
 
             var assetData = asset.get('data');
-            
             if (assetData)
                 asset.set('data', editor.call('material:default', assetData));
         }
@@ -27631,7 +27625,6 @@ editor.once('load', function() {
     overlay.append(loading);
 
     editor.method('assets:progress', function(progress) {
-       
         loading.progress = progress;
     });
 
@@ -29962,7 +29955,6 @@ editor.once('load', function() {
 
 
     editor.method('assets:jobs:add', function(asset) {
-        alert(asset.get("id"))
         if (jobs[asset.get('id')])
             return;
 

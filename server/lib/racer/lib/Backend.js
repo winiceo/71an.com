@@ -19,7 +19,7 @@ ShareDB.types.map['json0'].registerSubtype(otText.type);
 //ShareDB.types.register(otText.type);
 
 var Backend = ShareDB.Backend;
-console.log(ShareDB.types.map)
+//console.log(ShareDB.types.map)
 
 
 module.exports = RacerBackend;
