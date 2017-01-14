@@ -2115,6 +2115,8 @@ editor.once('load', function() {
                 loadingScript.src = '/api/assets/' + config.project.settings.loading_screen_script + '/download';
             }
 
+            //alert(loadingScript.src)
+
             loadingScript.onload = function() {
                 loadingScreen = true;
                 init();

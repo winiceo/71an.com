@@ -1,0 +1,31 @@
+pc.script.create('whale', function (app) {
+    var RADIUS = 100;
+    
+    var Whale = function (entity) {
+        this.entity = entity;
+        
+        this.angle = 0;
+        this.speed = 0.1;
+    };
+
+    Whale.prototype = {
+        
+        initialize: function () {
+            this.entity.animation.currentTime = 10;
+        },
+        
+        update: function (dt) {
+            this.angle += this.speed * dt;
+            var p = this.entity.getLocalPosition();
+            this.entity.setLocalPosition(RADIUS * Math.sin(this.angle), p.y, RADIUS * Math.cos(this.angle));
+            
+            this.entity.setLocalEulerAngles(0, this.angle * pc.math.RAD_TO_DEG - 90, 0);
+            
+            if (this.entity.animation.currentTime > 18) {
+                this.entity.animation.currentTime = 10;
+            }
+        }
+    };
+
+   return Whale;
+});

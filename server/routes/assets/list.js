@@ -14,7 +14,7 @@ module.exports = function(backend, config, req, res, next) {
   var connection = backend.connect()
 
   var doc = connection.createSubscribeQuery('assets', {
-    "project": req.params.d
+    "scope.id": ""+parseInt(req.params.d)
   }, {}, function(err) {
 
     var tmp = []

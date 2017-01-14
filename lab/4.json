@@ -1,0 +1,181 @@
+{
+  "s": {
+    "assets": {
+      "6329224": {
+        "data": {
+          "scope": {
+            "type": "project",
+            "id": 451358
+          },
+          "user_id": 10695,
+          "source_asset_id": null,
+          "source": false,
+          "tags": [],
+          "name": "New Css",
+          "revision": 1,
+          "preload": true,
+          "meta": null,
+          "data": null,
+          "type": "css",
+          "file": {
+            "filename": "asset.css",
+            "size": 1,
+            "hash": "68b329da9893e34099c7d8ad5cb9c940"
+          },
+          "region": "eu-west-1",
+          "path": [],
+          "task": null
+        },
+        "type": "http://sharejs.org/types/JSONv0",
+        "v": 2,
+        "docName": "6329224",
+        "m": {
+          "ctime": 1484285218175,
+          "mtime": 1484285218292
+        }
+      },
+      "6329428": {
+        "data": {
+          "scope": {
+            "type": "project",
+            "id": 451358
+          },
+          "user_id": 10695,
+          "source_asset_id": null,
+          "source": false,
+          "tags": [],
+          "name": "74766_750566_567773.gif",
+          "revision": 1,
+          "preload": true,
+          "meta": {
+            "compress": {
+              "alpha": false,
+              "dxt": false,
+              "pvr": false,
+              "pvrBpp": 4,
+              "etc1": false
+            },
+            "format": "gif",
+            "type": "PaletteGIF",
+            "width": 256,
+            "height": 256,
+            "alpha": false,
+            "depth": 8,
+            "srgb": true,
+            "interlaced": false
+          },
+          "data": {
+            "addressu": "repeat",
+            "addressv": "repeat",
+            "minfilter": "linear_mip_linear",
+            "magfilter": "linear",
+            "anisotropy": 1,
+            "rgbm": false,
+            "mipmaps": true
+          },
+          "type": "texture",
+          "file": {
+            "filename": "74766_750566_567773.gif",
+            "hash": "17a4a61f8f7100b24c50bd7aef50d30c",
+            "size": 3233959,
+            "variants": {}
+          },
+          "region": "eu-west-1",
+          "path": [],
+          "task": null,
+          "has_thumbnail": true
+        },
+        "type": "http://sharejs.org/types/JSONv0",
+        "v": 5,
+        "docName": "6329428",
+        "m": {
+          "ctime": 1484286544678,
+          "mtime": 1484286559336
+        }
+      },
+      "6329429": {
+        "data": {
+          "scope": {
+            "type": "project",
+            "id": 451358
+          },
+          "user_id": 10695,
+          "source_asset_id": null,
+          "source": false,
+          "tags": [],
+          "name": "balls.js",
+          "revision": 1,
+          "preload": true,
+          "meta": null,
+          "data": {
+            "order": 100,
+            "scripts": {
+              "balls": {
+                "attributesOrder": [
+                  "count"
+                ],
+                "attributes": {
+                  "count": {
+                    "type": "number",
+                    "default": 25
+                  }
+                }
+              }
+            },
+            "loading": false
+          },
+          "type": "script",
+          "file": {
+            "filename": "balls.js",
+            "size": 1272,
+            "hash": "bf7094f98fafec273741db570e98820b"
+          },
+          "region": "eu-west-1",
+          "path": [],
+          "task": null
+        },
+        "type": "http://sharejs.org/types/JSONv0",
+        "v": 3,
+        "docName": "6329429",
+        "m": {
+          "ctime": 1484286545736,
+          "mtime": 1484286548827
+        }
+      },
+      "6329430": {
+        "data": {
+          "scope": {
+            "type": "project",
+            "id": 451358
+          },
+          "user_id": 10695,
+          "source_asset_id": null,
+          "source": false,
+          "tags": [],
+          "name": "68ac8ffd0aa5f19c4fe4b2b51d0268bd.mp3",
+          "revision": 1,
+          "preload": true,
+          "meta": null,
+          "data": null,
+          "type": "audio",
+          "file": {
+            "filename": "68ac8ffd0aa5f19c4fe4b2b51d0268bd.mp3",
+            "size": 385358,
+            "hash": "68ac8ffd0aa5f19c4fe4b2b51d0268bd"
+          },
+          "region": "eu-west-1",
+          "path": [],
+          "task": null
+        },
+        "type": "http://sharejs.org/types/JSONv0",
+        "v": 2,
+        "docName": "6329430",
+        "m": {
+          "ctime": 1484286572678,
+          "mtime": 1484286572886
+        }
+      }
+    }
+  },
+  "a": "bs"
+}

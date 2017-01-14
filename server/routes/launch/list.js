@@ -55,7 +55,7 @@ module.exports = function (backend, config, req, res, next) {
             "api": "http://192.168.1.103:3100/api",
             "home": "http://192.168.1.103:4444",
             "realtime": {"http": "ws://192.168.1.103:3200/channel"},
-            "messenger": {"http": "https://msg.playcanvas.com/", "ws": "https://msg.playcanvas.com/messages"},
+            "messenger": {"http": "https://msg.playcanvas.com/", "ws": "http://192.168.1.103:3300/messages"},
             "engine": "https://code.playcanvas.com/playcanvas-stable.js",
 
             "physics": "https://code.playcanvas.com/ammo.dcab07b.js",

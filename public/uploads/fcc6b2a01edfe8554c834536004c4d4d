@@ -1,0 +1,18 @@
+var AnimatePosition = pc.createScript('animatePosition');
+
+// initialize code called once per entity
+AnimatePosition.prototype.initialize = function() {
+    
+};
+
+// update code called every frame
+AnimatePosition.prototype.update = function(dt) {
+    
+};
+
+// swap method called for script hot-reloading
+// inherit your script state here
+// AnimatePosition.prototype.swap = function(old) { };
+
+// to learn more about script anatomy, please read:
+// http://developer.playcanvas.com/en/user-manual/scripting/

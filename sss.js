@@ -118,17 +118,28 @@
 var nunjucks=require("nunjucks");
 
 var fs = require('hexo-fs');
+//
+// var a=function(input ,data){
+//   return  (new Nunjucks.Template(input)).render(data)
+// }
+//
+// var res = nunjucks.render('./server/routes/assets/js_template.html', {className:"leven"});
+// var reg = new RegExp('(.+)(.js)', "gmi");
+// var message="leven.js.js"
+// var obj = message.replace(reg, "$1")
+// //let temp=require("./server/routes/assets/js_template.html")
+//
+// console.log(res)
+// console.log(obj)
 
-var a=function(input ,data){
-  return  (new Nunjucks.Template(input)).render(data)
-}
-
-var res = nunjucks.render('./server/routes/assets/js_template.html', {className:"leven"});
-var reg = new RegExp('(.+)(.js)', "gmi");
-var message="leven.js.js"
-var obj = message.replace(reg, "$1")
-//let temp=require("./server/routes/assets/js_template.html")
-
-console.log(res)
-console.log(obj)
+var a=fs.readFileSync("/abc/kevio/kevio/public/uploads/0be78848a5111ac8b01084b1b3edef3e")
+//console.log(a)
 //console.log(a(temp,{className:"leven"}))
+
+
+fs.readFile('/abc/kevio/kevio/public/uploads/0be78848a5111ac8b01084b1b3edef3e', function(err, original_data){
+    fs.writeFile('image_orig.jpg', original_data, function(err) {});
+    var base64Image = original_data.toString('base64');
+    var decodedImage = new Buffer(base64Image, 'base64');
+    fs.writeFile('image_decoded.jpg', decodedImage, function(err) {});
+});

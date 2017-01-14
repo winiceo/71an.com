@@ -1,0 +1,136 @@
+pc.script.create('boid', function (app) {
+    var MANAGER_ENTITY = 'BoidManager';
+    var COHESION_SCALE = 1/50;
+    var MATCHING_SCALE = 1/4;
+    var SPACING_LIMIT = 2;
+    var SPACING_SCALE = 1;
+    var CENTERING_LIMIT = 25;
+    var CENTERING_SCALE = 1/50;
+    var MIN_Y = 0;
+    var BOXING_SCALE = 1;
+    var BOXING_RANGE = 1;
+    
+    var MAX_VELOCITY = 10;
+    
+    var cohesion = new pc.Vec3(); // Keep boids in group
+    var spacing = new pc.Vec3();  // Keep them separated
+    var matching = new pc.Vec3(); // Keep them in the same direction
+    var centering = new pc.Vec3(); // Keep them near the origin
+    var boxing = new pc.Vec3();   // Keep them above the ground / in a box
+    
+    var flockCenter = new pc.Vec3();
+    var flockVelocity = new pc.Vec3();
+    
+    var dx = new pc.Vec3();
+    var dv = new pc.Vec3();
+        
+    var Boid = function (entity) {
+        this.entity = entity;
+        
+        this.position = null;
+        this.velocity = new pc.Vec3();
+        this.acceleration = new pc.Vec3();
+        
+        this.frame = 0;
+    };
+
+    Boid.prototype = {
+        initialize: function () {
+            this.managerEntity = app.root.findByName(MANAGER_ENTITY);
+            this.manager = this.managerEntity.script.instances.boid_manager.instance;
+            
+            // Register this boid with the manager
+            this.manager.add(this.entity);
+        },
+        
+        update: function (dt) {
+            
+            this.position = this.entity.getPosition();
+            
+            this.calculateCohesion();
+            this.calculateSpacing();
+            this.calculateMatching();
+            this.calculateCentering();
+            this.calculateBoxing();
+            
+            this.acceleration.add(cohesion).add(spacing).add(matching).add(centering).add(boxing);
+            
+            dv.copy(this.acceleration).scale(dt);
+            
+            this.velocity.add(dv);
+
+            if (this.velocity.length() > MAX_VELOCITY) { 
+                this.velocity.normalize().scale(MAX_VELOCITY);
+            }
+            // damp vertical velocity
+            this.velocity.y *= 0.95;
+            
+            dx.copy(this.velocity).scale(dt);
+            dx.add(this.position);
+
+            // Update lookat every 2 frames
+            this.frame++;
+            if (this.frame >= 2) {
+                this.entity.lookAt(dx);    
+                this.frame = 0;
+            }
+            
+            
+            this.entity.setLocalPosition(dx);
+        },
+        
+        calculateCohesion: function () {
+            cohesion.sub2(this.manager.flockCenter, this.position).scale(COHESION_SCALE);
+        },
+        
+        calculateSpacing: function () {
+            var positions = this.manager.getNearbyPositions(this.entity);
+                
+            var count = 0;
+            var pos, i, n = positions.length;
+            for (i = 0; i < n; i++) {
+                pos = positions[i];
+                dx.sub2(pos, this.position);
+                if (dx.lengthSq() < SPACING_LIMIT) { 
+                    spacing.sub(dx);
+                    count++;
+                }
+            }
+            
+            if (count) {
+                spacing.scale(SPACING_SCALE / count);
+                
+            }
+        },
+        
+        calculateMatching: function () {
+            matching.sub2(this.manager.flockVelocity, this.velocity).scale(MATCHING_SCALE);
+        },
+    
+        calculateCentering: function () {
+            centering.set(0, 0, 0);
+            // vector to origin
+            dx.copy(this.position).scale(-1);
+            if (dx.length() > CENTERING_LIMIT) {
+                centering.copy(dx).scale(CENTERING_SCALE);
+            }
+        },
+        
+        calculateBoxing: function () {
+            var b;
+            if (this.position.y < MIN_Y + BOXING_RANGE) {
+                b = (MIN_Y + BOXING_RANGE - this.position.y) * BOXING_SCALE;
+            } else {
+                b = 0;
+            }
+            boxing.set(0,b,0);
+        },
+        
+        getVelocity: function () {
+            return this.velocity;
+        }
+        
+    };
+
+    return Boid;
+});

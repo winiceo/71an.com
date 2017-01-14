@@ -58,7 +58,7 @@ module.exports = (backend, options, cb) => {
   requests.disableHeaders(["x-powered-by"])
     .compress()
     .json({
-      limit: "5MB"
+      limit: "15MB"
     })
     .url({
       extended: true

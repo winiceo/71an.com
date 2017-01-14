@@ -1,59 +1,380 @@
 {
-  "self": {
-    "id": 10695,
-    "username": "leven",
-    "betaTester": true,
-    "superUser": true,
-    "openedEditor": true,
-    "tips": {
-      "store": true
+  "data": {
+    "data": {
+      "name": "Main",
+      "created": "2016-11-17T10:51:00.269Z",
+      "settings": {
+        "physics": {
+          "gravity": [
+            0,
+            -9.8,
+            0
+          ]
+        },
+        "render": {
+          "fog_end": 1000,
+          "tonemapping": 3,
+          "skybox": null,
+          "fog_density": 0.01,
+          "gamma_correction": 1,
+          "exposure": 0.9,
+          "fog_start": 1,
+          "global_ambient": [
+            0.2,
+            0.2,
+            0.2
+          ],
+          "skyboxIntensity": 1,
+          "fog_color": [
+            0,
+            0,
+            0
+          ],
+          "lightmapMode": 1,
+          "fog": "none",
+          "lightmapMaxResolution": 2048,
+          "skyboxMip": 0,
+          "lightmapSizeMultiplier": 16
+        }
+      },
+      "scene": 490295,
+      "entities": {
+        "ba190624-acb3-11e6-a8cd-22000ac481df": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "name": "Root",
+          "parent": null,
+          "resource_id": "ba190624-acb3-11e6-a8cd-22000ac481df",
+          "components": {},
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "enabled": true,
+          "children": [
+            "ba19082c-acb3-11e6-a8cd-22000ac481df",
+            "ba1909ee-acb3-11e6-a8cd-22000ac481df",
+            "ba190dfe-acb3-11e6-a8cd-22000ac481df",
+            "ba190c46-acb3-11e6-a8cd-22000ac481df",
+            "96327aa3-ea97-423a-9bc8-5cacc75ef340"
+          ],
+          "tags": []
+        },
+        "ba1909ee-acb3-11e6-a8cd-22000ac481df": {
+          "position": [
+            2,
+            2,
+            -2
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "name": "Light",
+          "parent": "ba190624-acb3-11e6-a8cd-22000ac481df",
+          "resource_id": "ba1909ee-acb3-11e6-a8cd-22000ac481df",
+          "components": {
+            "light": {
+              "castShadows": true,
+              "shadowDistance": 16,
+              "vsmBlurSize": 8,
+              "shadowUpdateMode": 2,
+              "normalOffsetBias": 0.04,
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "falloffMode": 0,
+              "shadowResolution": 1024,
+              "outerConeAngle": 45,
+              "enabled": true,
+              "range": 8,
+              "affectDynamic": true,
+              "intensity": 1,
+              "affectLightmapped": false,
+              "vsmBlurMode": 1,
+              "innerConeAngle": 40,
+              "shadowBias": 0.04,
+              "bake": false,
+              "type": "directional",
+              "shadowType": 1,
+              "vsmBias": 0.01,
+              "isStatic": false,
+              "bakeDir": true,
+              "cookieAsset": null,
+              "cookieIntensity": 1,
+              "cookieFalloff": true,
+              "cookieChannel": "rgb",
+              "cookieAngle": 0,
+              "cookieScale": [
+                1,
+                1
+              ],
+              "cookieOffset": [
+                0,
+                0
+              ]
+            }
+          },
+          "rotation": [
+            30,
+            15,
+            0
+          ],
+          "enabled": true,
+          "children": [],
+          "tags": []
+        },
+        "ba190dfe-acb3-11e6-a8cd-22000ac481df": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            8,
+            1,
+            8
+          ],
+          "name": "Plane",
+          "parent": "ba190624-acb3-11e6-a8cd-22000ac481df",
+          "resource_id": "ba190dfe-acb3-11e6-a8cd-22000ac481df",
+          "components": {
+            "model": {
+              "lightMapSizeMultiplier": 1,
+              "castShadows": true,
+              "castShadowsLightmap": true,
+              "lightmapped": false,
+              "materialAsset": 6341835,
+              "receiveShadows": true,
+              "enabled": true,
+              "castShadowsLightMap": false,
+              "asset": null,
+              "lightmapSizeMultiplier": 1,
+              "type": "plane",
+              "lightMapped": false,
+              "isStatic": false
+            }
+          },
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "enabled": true,
+          "children": [],
+          "tags": []
+        },
+        "ba19082c-acb3-11e6-a8cd-22000ac481df": {
+          "position": [
+            2.94329571723938,
+            2.975766897201538,
+            2.905249834060669
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "name": "Camera",
+          "parent": "ba190624-acb3-11e6-a8cd-22000ac481df",
+          "resource_id": "ba19082c-acb3-11e6-a8cd-22000ac481df",
+          "components": {
+            "camera": {
+              "projection": 0,
+              "farClip": 1000,
+              "clearColorBuffer": true,
+              "priority": 0,
+              "fov": 45,
+              "clearDepthBuffer": true,
+              "frustumCulling": true,
+              "clearColor": [
+                0.20392156862745098,
+                0.28627450980392155,
+                0.3686274509803922,
+                1
+              ],
+              "enabled": true,
+              "orthoHeight": 4,
+              "nearClip": 0.1,
+              "rect": [
+                0,
+                0,
+                1,
+                1
+              ]
+            }
+          },
+          "rotation": [
+            -24.200000762939453,
+            46.60000228881836,
+            1.8166073800784943e-7
+          ],
+          "enabled": true,
+          "children": [],
+          "tags": []
+        },
+        "ba190c46-acb3-11e6-a8cd-22000ac481df": {
+          "position": [
+            -1.5,
+            0.5,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "name": "Box Position Anim",
+          "parent": "ba190624-acb3-11e6-a8cd-22000ac481df",
+          "resource_id": "ba190c46-acb3-11e6-a8cd-22000ac481df",
+          "components": {
+            "model": {
+              "castShadows": true,
+              "castShadowsLightmap": true,
+              "lightmapped": false,
+              "materialAsset": 6341834,
+              "receiveShadows": true,
+              "enabled": true,
+              "asset": null,
+              "lightmapSizeMultiplier": 1,
+              "type": "box",
+              "isStatic": false
+            },
+            "script": {
+              "enabled": true,
+              "order": [
+                "animatePosition"
+              ],
+              "scripts": {
+                "animatePosition": {
+                  "enabled": true,
+                  "attributes": {
+                    "offsetCurve": {
+                      "keys": [
+                        [
+                          0,
+                          0
+                        ],
+                        [
+                          0,
+                          0,
+                          0.7441860465116279,
+                          0.46041920195771646,
+                          0.913953488372093,
+                          0.05115768910641294,
+                          1,
+                          0
+                        ],
+                        [
+                          0,
+                          0,
+                          1,
+                          0
+                        ]
+                      ],
+                      "type": 1
+                    },
+                    "duration": 1
+                  }
+                }
+              }
+            }
+          },
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "enabled": true,
+          "children": [],
+          "tags": []
+        },
+        "96327aa3-ea97-423a-9bc8-5cacc75ef340": {
+          "position": [
+            0,
+            0.5,
+            -1.5
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "name": "Box Scale Anim",
+          "parent": "ba190624-acb3-11e6-a8cd-22000ac481df",
+          "resource_id": "96327aa3-ea97-423a-9bc8-5cacc75ef340",
+          "components": {
+            "model": {
+              "castShadows": true,
+              "castShadowsLightmap": true,
+              "lightmapped": false,
+              "materialAsset": 6341834,
+              "receiveShadows": true,
+              "enabled": true,
+              "asset": null,
+              "lightmapSizeMultiplier": 1,
+              "type": "box",
+              "isStatic": false
+            },
+            "script": {
+              "enabled": true,
+              "order": [
+                "animateCurve"
+              ],
+              "scripts": {
+                "animateCurve": {
+                  "enabled": true,
+                  "attributes": {
+                    "offsetCurve": {
+                      "keys": [
+                        0,
+                        0,
+                        0.5,
+                        -0.2,
+                        1,
+                        0
+                      ],
+                      "type": 2
+                    },
+                    "duration": 0.5
+                  }
+                }
+              }
+            }
+          },
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "enabled": true,
+          "children": [],
+          "tags": []
+        }
+      },
+      "project_id": 451506
     },
-    "plan": {
-      "id": 1,
-      "type": "free"
+    "type": "http://sharejs.org/types/JSONv0",
+    "v": 0,
+    "docName": "490295",
+    "m": {
+      "ctime": 1479379860269.53,
+      "mtime": 1481198432975
     }
   },
-  "accessToken": "to52zxqwejzdbc67hdxahc5ja62royhe",
-  "project": {
-    "id": "1484257084913",
-    "repositoryUrl": "/api/projects/450909/repositories/directory/sourcefiles",
-    "scriptPrefix": "/api/files/code/450909/directory",
-    "settings": {
-      "loading_screen_script": null,
-      "transparent_canvas": false,
-      "use_device_pixel_ratio": true,
-      "use_legacy_scripts": false,
-      "preserve_drawing_buffer": false,
-      "antiAlias": true,
-      "height": 720,
-      "libraries": [],
-      "width": 1280,
-      "vr": false,
-      "scripts": [],
-      "fill_mode": "FILL_WINDOW",
-      "resolution_mode": "AUTO"
-    },
-    "name": "ccc",
-    "description": "asdfasdf",
-    "primaryScene": "1484257085054",
-    "private": true,
-    "privateAssets": true
-  },
-  "scene": {
-    "id": "1484257085054"
-  },
-  "url": {
-    "api": "//192.168.1.103:3000/api",
-    "home": "http://192.168.1.103:4444",
-    "realtime": {
-      "http": "ws://192.168.1.103:3200/channel"
-    },
-    "messenger": {
-      "http": "https://msg.playcanvas.com/",
-      "ws": "https://msg.playcanvas.com/messages"
-    },
-    "engine": "https://code.playcanvas.com/playcanvas-stable.js",
-    "physics": "https://code.playcanvas.com/ammo.dcab07b.js",
-    "webvr": "https://code.playcanvas.com/webvr-polyfill.91fbc44.js"
-  }
+  "a": "sub",
+  "c": "scenes",
+  "d": "490295"
 }

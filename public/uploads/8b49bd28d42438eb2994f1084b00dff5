@@ -1,0 +1,50 @@
+pc.script.create('camera', function (app) {
+    var MANAGER_ENTITY = 'BoidManager';
+    var BOID_ENTITY = 'Boid';
+    var MAX_OFFSET = 100;
+    
+    //var offset = v3.create();
+    var offset = new pc.Vec3();
+    
+    var dx = new pc.Vec3();
+    var dv = new pc.Vec3();
+    
+    var Camera = function (entity) {
+        this.entity = entity;
+        
+        this.acceleration = new pc.Vec3();
+        this.velocity = new pc.Vec3();
+        this.position = this.entity.getPosition();
+        
+        this.timer = 0;
+    };
+
+    Camera.prototype = {
+        initialize: function () {
+            this.managerEntity = app.root.findByName(MANAGER_ENTITY);
+            this.manager = this.managerEntity.script.instances.boid_manager.instance;
+            this.boid = app.root.findByName(BOID_ENTITY);
+        },
+        
+        postUpdate: function (dt) {
+            this.entity.lookAt(this.boid.getPosition());
+            
+            dv.copy(this.acceleration).scale(dt);
+            this.velocity.add(dv);
+            dx.copy(this.velocity).scale(dt);
+            
+            this.entity.translate(dx);
+            
+            this.entity.setPosition(this.position);
+            
+            this.timer -= dt;
+            if (this.timer < 0) {
+                this.acceleration[0] = pc.math.random(-5, 5);
+                this.acceleration[1] = pc.math.random(-5, 5);
+                this.acceleration[2] = pc.math.random(-5, 5);
+            }
+        }
+    };
+
+   return Camera;
+});

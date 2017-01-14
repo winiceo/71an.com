@@ -104,6 +104,21 @@ module.exports = (backend, event) => {
                         return //clientSend('auth{"id":10695}');
                     }
 
+                    //转换图像
+
+
+                    if (/^pipeline/.test(message)) {
+                        var reg = new RegExp('(pipeline)(.+)', "gmi");
+
+                        var a = message.replace(reg, "$2");
+
+                        var obj = JSON.parse(a)
+
+                        require('./common/pipeline')(shareDB, obj, event)
+
+                        return //clientSend('auth{"id":10695}');
+                    }
+
                     if (/^doc:save/.test(message)) {
                         var reg = new RegExp('(doc:save:")(.+)(")', "gmi");
 
@@ -142,8 +157,8 @@ module.exports = (backend, event) => {
                         var project = connection.get('projects', ""+obj.id);
                         project.fetch(function (err) {
                             if (err) throw err;
-
-                            project.submitOp({p: ['settings','scripts'], oi:  (obj.value)});
+                            var path=obj.path.split(".")
+                            project.submitOp({p: path, oi:  (obj.value)});
 
                             var oss = {
                                 "name": "project.update",

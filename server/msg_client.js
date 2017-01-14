@@ -49,7 +49,7 @@ module.exports = (conn,msg,event) => {
             doc.on('insert',function(a,b){
 
 
-                var asset=a[0].data
+                var asset=a[0]
                 console.log(asset)
                 var m={
                     "name": "asset.new",
@@ -61,7 +61,7 @@ module.exports = (conn,msg,event) => {
                     ],
                     "data": {
                         "asset": {
-                            "id": a[0].id,
+                            "id": asset.id,
                             "source": false,
                             "type": asset.data.type,
                             "scope": asset.data.scope,

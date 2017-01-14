@@ -13,7 +13,7 @@ let HttpError = require("./http-error");
 
 let upload = multer({
   //dest1: require("os").tmpdir(),
-  dest: path.join(__dirname, 'public/uploads/'),
+  dest: path.join(__dirname, '/../../public/uploads/'),
   limits: { fileSize: env.get("MAX_FILE_SIZE_BYTES") }
 });
 

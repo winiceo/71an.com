@@ -1,0 +1,127 @@
+pc.script.create('boid_manager', function (app) {
+    var NUM_BOIDS = 500;
+    var INITIAL_SPACING = 25;
+    var CACHE_TIME = 2000;
+    var NEIGHBOUR_RANGE = 1;
+    
+    var BoidManager = function (entity) {
+        this.entity = entity;
+        
+        this.boids = [];
+        this.positions = []; // store boid positions
+        this.cache = {};  // cache the nearest neighbours
+        this.count = 0;
+        
+        this.flockCenter = new pc.Vec3();
+        this.flockVelocity = new pc.Vec3();
+        
+        this._hits = 0;
+        this._misses = 0;
+    };
+
+    BoidManager.prototype = {
+        initialize: function () {
+            this.boid = app.root.findByName('Boid');
+            
+            var i;
+            
+            for (i = 0; i < NUM_BOIDS-1; i++) {
+                var b = this.boid.clone();
+                this.boid.getParent().addChild(b);
+                var p = b.getPosition();
+                //b.setPosition(p[0] + pc.math.random(-INITIAL_SPACING/2, INITIAL_SPACING/2), INITIAL_SPACING/2 + p[1] + pc.math.random(-INITIAL_SPACING/2, INITIAL_SPACING/2), p[2] + pc.math.random(-INITIAL_SPACING/2, INITIAL_SPACING/2));
+                b.setPosition(p.x + pc.math.random(-INITIAL_SPACING/2, INITIAL_SPACING/2), INITIAL_SPACING/2 + p.y + pc.math.random(-INITIAL_SPACING/2, INITIAL_SPACING/2), p.z + pc.math.random(-INITIAL_SPACING/2, INITIAL_SPACING/2));
+            }
+        },
+        
+        update: function (dt) {
+//            pc.debug.display({
+//                hits: this._hits,
+//                misses: this._misses,
+//                count: this.count
+//            });
+            
+            this._hits = 0;
+            this._misses = 0;            
+
+//            v3.set(this.flockCenter,0,0,0);
+//            v3.set(this.flockVelocity,0,0,0);
+            
+            this.flockCenter.set(0,0,0);
+            this.flockVelocity.set(0,0,0);
+            
+            var i, n = this.boids.length;
+            for (i = 0; i < n; i++) {
+                var boid = this.boids[i];
+                this.positions[i] = boid.getPosition();
+//                v3.add(this.flockCenter, this.positions[i], this.flockCenter);
+//                v3.add(this.flockVelocity, boid.script.instances['boid'].instance.velocity, this.flockVelocity);
+                this.flockCenter.add(this.positions[i]);
+                //this.flockVelocity.add(boid.script.instances['boid'].instance.velocity);
+                this.flockVelocity.add(boid.script.boid.velocity);
+            }
+    
+//            v3.scale(this.flockCenter, 1/this.boids.length, this.flockCenter);
+//            v3.scale(this.flockVelocity, 1/this.boids.length, this.flockVelocity);
+            this.flockCenter.scale(1/this.boids.length);
+            this.flockVelocity.scale(1/this.boids.length);
+        },
+        
+        add: function (entity) {
+            this.boids.push(entity);
+        },
+        
+        getNearbyPositions: function (e) {
+            var guid = e.getGuid();
+            var cache = this.cache[guid];
+            var expired = true;
+            var i, n;
+            if (cache) {
+                expired = (Date.now() - cache.time > CACHE_TIME);
+                //return cache.cache;
+            }
+            
+            if (expired) {
+                this._misses++;
+                if (!cache) {
+                    // First time, create empty cache entry and return straight away with a
+                    // later time for re-trying
+                    this.cache[guid] = {
+                        cache: [],
+                        time: Date.now() + (this.count++*20)
+                    };
+                    
+                    if (this.count > 200) {
+                        this.count = 0;
+                    }
+                    return this.cache[guid].cache;
+                } else {
+                    var p = e.getPosition();
+                    var v = new pc.Vec3();
+                    
+                    this.cache[guid].cache = [];
+                    this.cache[guid].time = Date.now() + (this.count++*100);
+                    if (this.count > 200) {
+                        this.count = 0;
+                    }
+                    
+                    n = this.positions.length;
+                    for (i = 0; i < n; i++) {
+                        var pos = this.positions[i];
+                        //v3.subtract(pos, p, v);
+                        v.sub2(pos, p);
+                        if (v.lengthSq() < NEIGHBOUR_RANGE) {
+                            this.cache[guid].cache.push(pos);
+                        }
+                    }
+                }
+            } else {
+                this._hits++;
+            }
+
+            return this.cache[guid].cache;            
+        }
+    };
+
+    return BoidManager;
+});
