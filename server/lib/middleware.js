@@ -11,8 +11,28 @@ let path = require("path");
 let env = require("./environment");
 let HttpError = require("./http-error");
 
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '/../../public/uploads/'))
+  },
+  filename: function (req, file, cb) {
+
+    var getFileExt = function(fileName){
+      var fileExt = fileName.split(".");
+      if( fileExt.length === 1 || ( fileExt[0] === "" && fileExt.length === 2 ) ) {
+        return "";
+      }
+      return fileExt.pop();
+    }
+    cb(null, Date.now() + '.' + getFileExt(file.originalname))
+  }
+})
+
+
 let upload = multer({
   //dest1: require("os").tmpdir(),
+  storage: storage,
   dest: path.join(__dirname, '/../../public/uploads/'),
   limits: { fileSize: env.get("MAX_FILE_SIZE_BYTES") }
 });

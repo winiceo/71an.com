@@ -7,5 +7,6 @@ fakes3
 .htaccess
 locale/**/*.json
 public/stylesheets/userbar.css
+public/**/*
 dist/
 client/

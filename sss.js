@@ -135,11 +135,36 @@ var fs = require('hexo-fs');
 var a=fs.readFileSync("/abc/kevio/kevio/public/uploads/0be78848a5111ac8b01084b1b3edef3e")
 //console.log(a)
 //console.log(a(temp,{className:"leven"}))
+//
+//
+// fs.readFile('/abc/kevio/kevio/public/uploads/0be78848a5111ac8b01084b1b3edef3e', function(err, original_data){
+//     fs.writeFile('image_orig.jpg', original_data, function(err) {});
+//     var base64Image = original_data.toString('base64');
+//     var decodedImage = new Buffer(base64Image, 'base64');
+//     fs.writeFile('image_decoded.jpg', decodedImage, function(err) {});
+// });
 
 
-fs.readFile('/abc/kevio/kevio/public/uploads/0be78848a5111ac8b01084b1b3edef3e', function(err, original_data){
-    fs.writeFile('image_orig.jpg', original_data, function(err) {});
-    var base64Image = original_data.toString('base64');
-    var decodedImage = new Buffer(base64Image, 'base64');
-    fs.writeFile('image_decoded.jpg', decodedImage, function(err) {});
-});
+// var threeOBJ = require("three-obj")(  );
+//
+// threeOBJ.load("lab/mob/sphere.fbx", function( response ){
+//
+//     console.log("DATA:", response );
+//
+// });
+
+
+var fs = require("fs")
+var parseOBJ = require("parse-obj")
+
+parseOBJ(fs.createReadStream("./lab/mob/model.obj"), function(err, result) {
+    if(err) {
+        throw new Error("Error parsing OBJ file: " + err)
+    }
+    //console.log("Got mesh: ", result)
+})
+
+
+var parseDae = require('collada-dae-parser')
+var parsedCollada = parseDae(fs.readFileSync('lab/mob/B.dae'))
+console.log(parsedCollada)

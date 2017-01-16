@@ -1,0 +1,41 @@
+{
+  "a": "op",
+  "c": "assets",
+  "d": "6349800",
+  "v": 1,
+  "src": "",
+  "op": [
+    {
+      "p": [
+        "meta"
+      ],
+      "oi": {
+        "textures": [],
+        "materials": [
+          {
+            "name": "Pingu_mat",
+            "textures": []
+          }
+        ],
+        "mappings": [
+          0
+        ],
+        "animation": {
+          "available": true,
+          "meta": {
+            "name": "Take 001",
+            "duration": 1
+          }
+        }
+      },
+      "od": null
+    },
+    {
+      "p": [
+        "task"
+      ],
+      "oi": null,
+      "od": null
+    }
+  ]
+}

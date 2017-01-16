@@ -6,6 +6,9 @@ module.exports = {
 
         app.get("/api/assets/:id/file/:name",
             require("./read").bind(app, backend, config));
+        
+        app.get("/api/assets/files/:folder/:name",
+            require("./files").bind(app, backend, config));
 
 
         app.get("/api/assets/:id/download",

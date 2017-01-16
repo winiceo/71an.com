@@ -49,6 +49,11 @@ module.exports = function (backend, config, req, res, next) {
     if (!_.includes(["texture", 'audio', 'font','folder','cubemap','material'], data.type)) {
         content = fs.readFileSync(file.path)
     }
+
+    if(data.type=="scene"){
+        data.source=true
+        data.task="running"
+    }
     console.log(content)
 
     let obj = {
@@ -119,7 +124,8 @@ function createDocument(backend, obj, res) {
 
                 return;
             }
-            ;
+
+
         });
 
 

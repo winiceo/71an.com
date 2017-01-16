@@ -1,0 +1,56 @@
+{
+  "data": {
+    "data": {
+      "scope": {
+        "type": "project",
+        "id": 451506
+      },
+      "user_id": 10695,
+      "source_asset_id": "6347264",
+      "tags": [],
+      "name": "A.json",
+      "revision": 1,
+      "source": false,
+      "preload": true,
+      "region": "eu-west-1",
+      "meta": {
+        "meshes": 1,
+        "meshInstances": 1,
+        "nodes": 2,
+        "skins": 0,
+        "vertices": 44,
+        "triangles": 44,
+        "attributes": {
+          "position": 1,
+          "normal": 1
+        }
+      },
+      "data": {
+        "mapping": [
+          {
+            "material": 6347266
+          }
+        ],
+        "area": 0
+      },
+      "type": "model",
+      "file": {
+        "hash": "04c7a9eb892aecc610623f4dd66f82f6",
+        "filename": "A.json",
+        "size": 2106
+      },
+      "path": [],
+      "task": null
+    },
+    "type": "http://sharejs.org/types/JSONv0",
+    "v": 4,
+    "docName": "6347265",
+    "m": {
+      "mtime": 1484366013643,
+      "ctime": 1484366013505
+    }
+  },
+  "a": "sub",
+  "c": "assets",
+  "d": "6347265"
+}

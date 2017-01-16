@@ -1,0 +1,35 @@
+{
+  "a": "op",
+  "c": "assets",
+  "d": "6350750",
+  "v": 1,
+  "src": "",
+  "op": [
+    {
+      "p": [
+        "meta"
+      ],
+      "oi": {
+        "textures": [],
+        "materials": [
+          {
+            "name": "Letter",
+            "textures": []
+          }
+        ],
+        "mappings": [
+          0
+        ],
+        "animation": null
+      },
+      "od": null
+    },
+    {
+      "p": [
+        "task"
+      ],
+      "oi": null,
+      "od": null
+    }
+  ]
+}

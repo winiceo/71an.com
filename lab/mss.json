@@ -1,0 +1,38 @@
+{
+  "data": {
+    "data": {
+      "scope": {
+        "type": "project",
+        "id": 451676
+      },
+      "user_id": 10695,
+      "source_asset_id": null,
+      "source": true,
+      "tags": [],
+      "name": "A.dae",
+      "revision": 1,
+      "preload": false,
+      "meta": null,
+      "data": null,
+      "type": "scene",
+      "file": {
+        "filename": "A.dae",
+        "size": 5690,
+        "hash": "679dd995a9bab97f31a1449368649087"
+      },
+      "region": "eu-west-1",
+      "path": [],
+      "task": "running"
+    },
+    "type": "http://sharejs.org/types/JSONv0",
+    "v": 1,
+    "docName": "6350750",
+    "m": {
+      "ctime": 1484414685150,
+      "mtime": 1484414685227
+    }
+  },
+  "a": "sub",
+  "c": "assets",
+  "d": "6350750"
+}
